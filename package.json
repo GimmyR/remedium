@@ -1,0 +1,8 @@
+{
+  "name": "remedium",
+  "private": true,
+  "workspaces": [
+    "api",
+    "front"
+  ]
+}
