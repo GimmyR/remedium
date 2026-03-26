@@ -13,19 +13,17 @@ describe('AuthController', () => {
             providers: [{
                 provide: AuthService,
                 useValue: {
-                    login: jest.fn(),
-                    validateUser: jest.fn()
+                    login: jest.fn()
                 }
             }, {
                 provide: AccountService,
                 useValue: {
-                    findOne: jest.fn(),
-                    create: jest.fn()
+                    findUser: jest.fn()
                 }
             }, {
                 provide: JwtService,
                 useValue: {
-                    sign: jest.fn()
+                    signAsync: jest.fn()
                 }
             }]
         }).compile();

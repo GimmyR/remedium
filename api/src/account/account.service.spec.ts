@@ -8,10 +8,14 @@ import { RoleService } from 'src/role/role.service';
 describe('UserService', () => {
     let service: AccountService;
 
-    const mockRepository = {
-        find: jest.fn(),
+    const mockAccountRepository = {
         findOne: jest.fn(),
-        create: jest.fn(),
+        save: jest.fn()
+    };
+
+    const mockRoleRepository = {
+        find: jest.fn(),
+        findOneBy: jest.fn(),
         save: jest.fn()
     };
 
@@ -19,10 +23,10 @@ describe('UserService', () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [AccountService, {
                 provide: getRepositoryToken(Account),
-                useValue: mockRepository
+                useValue: mockAccountRepository
             }, RoleService, {
                 provide: getRepositoryToken(Role),
-                useValue: mockRepository
+                useValue: mockRoleRepository
             }],
         }).compile();
 

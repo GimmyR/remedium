@@ -8,8 +8,7 @@ describe('RoleService', () => {
 
     const mockRoleRepository = {
         find: jest.fn(),
-        findOne: jest.fn(),
-        create: jest.fn(),
+        findOneBy: jest.fn(),
         save: jest.fn()
     };
 

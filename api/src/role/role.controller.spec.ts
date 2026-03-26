@@ -12,13 +12,14 @@ describe('RoleController', () => {
             providers: [{
                 provide: RoleService,
                 useValue: {
-                    findOne: jest.fn(),
-                    create: jest.fn()
+                    findUnique: jest.fn(),
+                    createRole: jest.fn(),
+                    findAll: jest.fn()
                 }
             }, {
                 provide: JwtService,
                 useValue: {
-                    sign: jest.fn()
+                    verifyAsync: jest.fn()
                 }
             }]
         }).compile();
