@@ -12,13 +12,13 @@ describe('UserController', () => {
             providers: [{
                 provide: AccountService,
                 useValue: {
-                    findOne: jest.fn(),
-                    create: jest.fn()
+                    getProfile: jest.fn(),
+                    createUser: jest.fn()
                 }
             }, {
                 provide: JwtService,
                 useValue: {
-                    sign: jest.fn()
+                    verifyAsync: jest.fn()
                 }
             }]
         }).compile();
