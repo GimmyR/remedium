@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Request, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { AccountDto } from './account.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
