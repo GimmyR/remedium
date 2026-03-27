@@ -1,9 +1,6 @@
-import { Body, Controller, Get, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { RoleService } from './role.service';
-import { RoleDto } from './role.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { RolesGuard } from 'src/auth/roles.guard';
-import { Roles } from 'src/auth/roles.decorator';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags("role")
@@ -11,17 +8,6 @@ import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagg
 @Controller('role')
 export class RoleController {
     constructor(private readonly roleService: RoleService) {}
-
-    @UseGuards(AuthGuard, RolesGuard)
-    @Roles('Admin')
-    @Post('create')
-    @ApiOperation({ summary: "Create a role (admin only)" })
-    @ApiResponse({ status: HttpStatus.CREATED, description: "Role is successfully created" })
-    @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: "Something went wrong" })
-    async createRole(@Body() role: RoleDto) {
-        const result = await this.roleService.createRole(role);
-        return result;
-    }
 
     @UseGuards(AuthGuard)
     @Get('/all')
