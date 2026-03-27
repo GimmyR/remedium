@@ -35,18 +35,4 @@ export class AccountService {
             relations: ['roles']
         });
     }
-
-    async getProfile(username: string): Promise<Account> {
-        const user = await this.userRepository.findOne({ 
-            where: {
-                username: username
-            },
-            relations: ['roles']
-        });
-
-        if(!user)
-            throw new NotFoundException({ error: "User not found" });
-
-        return user;
-    }
 }

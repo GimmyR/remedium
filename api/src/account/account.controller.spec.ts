@@ -12,7 +12,6 @@ describe('UserController', () => {
             providers: [{
                 provide: AccountService,
                 useValue: {
-                    getProfile: jest.fn(),
                     createUser: jest.fn()
                 }
             }, {
