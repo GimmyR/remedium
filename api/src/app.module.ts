@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './role/role.module';
 import { AccountModule } from './account/account.module';
+import { CompoundModule } from './compound/compound.module';
+import { CompoundsTestModule } from './compounds-test/compounds-test.module';
+import { TestDetailModule } from './test-detail/test-detail.module';
 import path from 'path';
 
 @Module({
@@ -30,10 +31,13 @@ import path from 'path';
         }),
         AccountModule,
         AuthModule,
-        RoleModule
+        RoleModule,
+        CompoundModule,
+        CompoundsTestModule,
+        TestDetailModule
     ],
-    controllers: [AppController],
-    providers: [AppService],
+    controllers: [],
+    providers: [],
 })
 
 export class AppModule {}
