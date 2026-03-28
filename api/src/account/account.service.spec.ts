@@ -15,8 +15,7 @@ describe('UserService', () => {
 
     const mockRoleRepository = {
         find: jest.fn(),
-        findOneBy: jest.fn(),
-        save: jest.fn()
+        findOneBy: jest.fn()
     };
 
     beforeEach(async () => {

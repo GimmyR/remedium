@@ -12,8 +12,6 @@ describe('RoleController', () => {
             providers: [{
                 provide: RoleService,
                 useValue: {
-                    findUnique: jest.fn(),
-                    createRole: jest.fn(),
                     findAll: jest.fn()
                 }
             }, {
