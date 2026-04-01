@@ -18,4 +18,8 @@ export class CompoundService {
 
         return compound;
     }
+
+    async findAll(): Promise<Compound[]> {
+        return await this.compoundRepository.find();
+    }
 }
