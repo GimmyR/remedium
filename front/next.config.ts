@@ -10,8 +10,9 @@ module.exports = {
     reactStrictMode: true
 };
 
+/** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
-  /* config options here */
+  transpilePackages: ['bootstrap']
 };
 
 export default nextConfig;
