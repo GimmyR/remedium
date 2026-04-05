@@ -28,7 +28,7 @@ export class CompoundsTestService {
         if(test.amount < compound.min || test.amount > compound.max) {
 
             test.error = true;
-            test.message = `Amount of ${compound.title} should be between ${compound.min} and ${compound.max} !`;
+            test.message = `Should be between ${compound.min} and ${compound.max}`;
             return test;
 
         } else {
