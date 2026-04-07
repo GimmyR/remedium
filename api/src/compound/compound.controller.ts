@@ -1,6 +1,7 @@
-import { Controller, Get, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, HttpStatus, UseInterceptors } from '@nestjs/common';
 import { CompoundService } from './compound.service';
 import { CompoundInterceptor } from './compound.interceptor';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('api/compound')
 export class CompoundController {
@@ -8,6 +9,9 @@ export class CompoundController {
 
     @Get("all")
     @UseInterceptors(CompoundInterceptor)
+    @ApiOperation({ summary: "Get all compounds" })
+    @ApiResponse({ status: HttpStatus.OK, description: "Retrieve all chemical compounds" })
+    @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: "Unknown error" })
     async findAll() {
         return await this.compoundService.findAll();
     }
