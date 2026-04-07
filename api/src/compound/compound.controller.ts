@@ -1,8 +1,9 @@
 import { Controller, Get, HttpStatus, UseInterceptors } from '@nestjs/common';
 import { CompoundService } from './compound.service';
 import { CompoundInterceptor } from './compound.interceptor';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags("compound")
 @Controller('api/compound')
 export class CompoundController {
     constructor(private readonly compoundService: CompoundService) {}
