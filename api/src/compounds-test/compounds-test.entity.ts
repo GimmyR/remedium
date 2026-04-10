@@ -6,7 +6,7 @@ export class CompoundsTest {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: "timestamptz" })
+    @Column({ type: process.env.NODE_ENV === "test" ? "datetime" : "timestamptz" })
     testDate: Date;
 
     @OneToMany(() => TestDetail, (detail) => detail.test)
