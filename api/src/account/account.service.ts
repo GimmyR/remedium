@@ -15,7 +15,7 @@ export class AccountService {
         private readonly roleService: RoleService
     ) {}
 
-    async createUser(user: AccountDto): Promise<string> {
+    async createUser(user: AccountDto): Promise<Account> {
         const salt = process.env.PASSWORD_STRENGTH;
 
         if(!salt)
@@ -23,8 +23,7 @@ export class AccountService {
 
         const hashedPassword = await hash(user.password, parseInt(salt));
         const clientRole = await this.roleService.findUnique("Client");
-        await this.userRepository.save({ ...user, password: hashedPassword, roles: [clientRole] });
-        return "User is created successfully";
+        return await this.userRepository.save({ ...user, password: hashedPassword, roles: [clientRole] });
     }
 
     async findUser(username: string): Promise<Account | null> {
