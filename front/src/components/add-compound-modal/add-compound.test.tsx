@@ -12,13 +12,21 @@ const props = {
 };
 
 describe("Test AddCompound component", () => {
-    it("should display title, unit and add button", () => {
+    it("should display title", () => {
         render(<AddCompound {...props}/>);
         const title = screen.getByText(props.compound.title);
-        const unit = screen.getByText(`(${props.compound.unit})`);
-        const button = screen.getByRole("button");
         expect(title).toBeDefined();
+    });
+
+    it("should display unit in parentheses", () => {
+        render(<AddCompound {...props}/>);
+        const unit = screen.getByText(`(${props.compound.unit})`);
         expect(unit).toBeDefined();
+    });
+
+    it("should display add button", () => {
+        render(<AddCompound {...props}/>);
+        const button = screen.getByRole("button");
         expect(button).toHaveTextContent("Add");
     });
 });
