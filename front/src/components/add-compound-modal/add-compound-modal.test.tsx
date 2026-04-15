@@ -44,15 +44,27 @@ describe("Test AddCompoundModal component", () => {
         });
     });
 
-    it("should display title and unit of compounds but also add buttons", () => {
+    it("should display title and unit of compounds that are not in compoundsToTest", () => {
         render(<AddCompoundModal {...props}/>);
         compounds.forEach(async (compound) => {
-            const title = await screen.findByText(compound.title);
-            expect(title).toBeInTheDocument();
-            const unit = await screen.findByText(`(${compound.unit})`);
-            expect(unit).toBeInTheDocument();
-            const button = screen.getByRole("button", { name: /add/i });
-            expect(button).toHaveTextContent("Add");
+            if(props.compoundsToTest.some(comp => comp.id != compound.id)) {
+                const title = await screen.findByText(compound.title);
+                expect(title).toBeInTheDocument();
+                const unit = await screen.findByText(`(${compound.unit})`);
+                expect(unit).toBeInTheDocument();
+            }
+        });
+    });
+
+    it("should not display title and unit of compounds that are in compoundsToTest", () => {
+        render(<AddCompoundModal {...props}/>);
+        compounds.forEach(async (compound) => {
+            if(props.compoundsToTest.some(comp => comp.id == compound.id)) {
+                const title = await screen.findByText(compound.title);
+                expect(title).toBeUndefined();
+                const unit = await screen.findByText(`(${compound.unit})`);
+                expect(unit).toBeUndefined();
+            }
         });
     });
 });
