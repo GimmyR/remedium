@@ -13,7 +13,7 @@ export default function TestInput({ compound, removeCompound, error } : Props) {
     return (
         <div className="mb-3">
             <div className="d-flex flex-row justify-content-between align-items-center mb-2">
-                <span className="fw-bold" data-testid="title-unit">{/* data-testid attribute is necessary to test this component with Jest */}
+                <span className="fw-bold" data-testid={`title-unit-${compound.id}`}>{/* data-testid attribute is necessary to test this component with Jest */}
                     {error && <i className={`bi ${error.status ? "bi-x-circle-fill text-danger" : "bi-check-circle-fill text-success"} me-2`}></i>}
                     {compound.title} <span className="fw-normal">({compound.unit})</span>
                 </span>

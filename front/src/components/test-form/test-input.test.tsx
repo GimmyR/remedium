@@ -14,7 +14,7 @@ const props = {
 describe("Test TestInput component", () => {
     it("should display the title and the unit of the compound", () => {
         render(<TestInput {...props}/>);
-        const titleUnit = screen.getByTestId("title-unit");
+        const titleUnit = screen.getByTestId(`title-unit-${props.compound.id}`);
         expect(titleUnit).toBeInTheDocument();
         expect(titleUnit).toHaveTextContent(`${props.compound.title} (${props.compound.unit})`);
     });
