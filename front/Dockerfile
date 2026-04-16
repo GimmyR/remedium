@@ -1,0 +1,10 @@
+FROM node:20-alpine
+ARG NEXT_PUBLIC_CLIENT_SIDE_TO_API
+ENV NEXT_PUBLIC_CLIENT_SIDE_TO_API=$NEXT_PUBLIC_CLIENT_SIDE_TO_API
+WORKDIR /app
+COPY package.*json ./
+RUN npm install
+COPY . .
+RUN npm run build
+EXPOSE 3000
+CMD [ "npm", "start" ]
