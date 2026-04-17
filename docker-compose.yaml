@@ -56,9 +56,16 @@ services:
         - NEXT_PUBLIC_CLIENT_SIDE_TO_API=${NEXT_PUBLIC_CLIENT_SIDE_TO_API}
     container_name: next-remedium
     ports:
-        - "3000:3000"
+      - "3000:3000"
     profiles:
-        - prod
+      - prod
+
+  front-ci:
+    build:
+      context: ./front
+      dockerfile: Dockerfile.ci
+    profiles:
+      - ci
       
 volumes:
   remedium:
