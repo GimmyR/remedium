@@ -1,0 +1,37 @@
+name: Remedium
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Create .env
+        run: |
+          echo "DB_PORT=${{ secrets.DB_PORT }}" > .env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "PASSWORD_STRENGTH=${{ secrets.PASSWORD_STRENGTH }}" >> .env
+          echo "NEXT_PUBLIC_CLIENT_SIDE_TO_API=${{ secrets.NEXT_PUBLIC_CLIENT_SIDE_TO_API }}" >> .env
+
+      - name: Build CI images
+        run: docker compose --profile ci build
+
+      - name: Run backend tests
+        run: docker compose --profile ci run --rm backend-ci
+
+      - name: Build runtime images
+        run: docker compose --profile prod build
