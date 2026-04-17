@@ -41,6 +41,13 @@ services:
     profiles:
       - prod
 
+  api-ci:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.ci
+    profiles:
+      - ci
+
   front:
     build:
       context: ./front
