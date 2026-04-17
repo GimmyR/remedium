@@ -20,6 +20,52 @@ services:
       retries: 10
       start_period: 5s
       start_interval: 5s
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: db
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      PASSWORD_STRENGTH: ${PASSWORD_STRENGTH}
+      JWT_SECRET: ${JWT_SECRET}
+    profiles:
+      - prod
+
+  api-ci:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.ci
+    profiles:
+      - ci
+
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_CLIENT_SIDE_TO_API=${NEXT_PUBLIC_CLIENT_SIDE_TO_API}
+    container_name: next-remedium
+    ports:
+      - "3000:3000"
+    profiles:
+      - prod
+
+  front-ci:
+    build:
+      context: ./front
+      dockerfile: Dockerfile.ci
+    profiles:
+      - ci
       
 volumes:
   remedium:
