@@ -30,8 +30,11 @@ jobs:
       - name: Build CI images
         run: docker compose --profile ci build
 
-      - name: Run backend tests
-        run: docker compose --profile ci run --rm backend-ci
+      - name: Run API tests
+        run: docker compose --profile ci run --rm api-ci
+
+      - name: Run frontend tests
+        run: docker compose --profile ci run --rm front-ci
 
       - name: Build runtime images
         run: docker compose --profile prod build
