@@ -8,30 +8,34 @@ import { RoleService } from 'src/role/role.service';
 
 @Injectable()
 export class AccountService {
-    constructor(
-        @InjectRepository(Account)
-        private readonly userRepository: Repository<Account>,
+  constructor(
+    @InjectRepository(Account)
+    private readonly userRepository: Repository<Account>,
 
-        private readonly roleService: RoleService
-    ) {}
+    private readonly roleService: RoleService,
+  ) {}
 
-    async createUser(user: AccountDto): Promise<Account> {
-        const salt = process.env.PASSWORD_STRENGTH;
+  async createUser(user: AccountDto): Promise<Account> {
+    const salt = process.env.PASSWORD_STRENGTH;
 
-        if(!salt)
-            throw new InternalServerErrorException("Password strength is undefined");
+    if (!salt)
+      throw new InternalServerErrorException('Password strength is undefined');
 
-        const hashedPassword = await hash(user.password, parseInt(salt));
-        const clientRole = await this.roleService.findUnique("Client");
-        return await this.userRepository.save({ ...user, password: hashedPassword, roles: [clientRole] });
-    }
+    const hashedPassword = await hash(user.password, parseInt(salt));
+    const clientRole = await this.roleService.findUnique('Client');
+    return await this.userRepository.save({
+      ...user,
+      password: hashedPassword,
+      roles: [clientRole],
+    });
+  }
 
-    async findUser(username: string): Promise<Account | null> {
-        return await this.userRepository.findOne({
-            where: {
-                username: username
-            },
-            relations: ['roles']
-        });
-    }
+  async findUser(username: string): Promise<Account | null> {
+    return await this.userRepository.findOne({
+      where: {
+        username: username,
+      },
+      relations: ['roles'],
+    });
+  }
 }

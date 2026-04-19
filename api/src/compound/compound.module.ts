@@ -5,10 +5,8 @@ import { Compound } from './compound.entity';
 import { CompoundController } from './compound.controller';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Compound])
-  ],
+  imports: [TypeOrmModule.forFeature([Compound])],
   providers: [CompoundService],
-  controllers: [CompoundController]
+  controllers: [CompoundController],
 })
 export class CompoundModule {}

@@ -5,21 +5,20 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class CompoundService {
-    constructor(
-        @InjectRepository(Compound)
-        private readonly compoundRepository: Repository<Compound>
-    ) {}
+  constructor(
+    @InjectRepository(Compound)
+    private readonly compoundRepository: Repository<Compound>,
+  ) {}
 
-    async findOne(id: number): Promise<Compound> {
-        const compound = await this.compoundRepository.findOneBy({ id: id });
+  async findOne(id: number): Promise<Compound> {
+    const compound = await this.compoundRepository.findOneBy({ id: id });
 
-        if(!compound)
-            throw new NotFoundException("Compound not found");
+    if (!compound) throw new NotFoundException('Compound not found');
 
-        return compound;
-    }
+    return compound;
+  }
 
-    async findAll(): Promise<Compound[]> {
-        return await this.compoundRepository.find();
-    }
+  async findAll(): Promise<Compound[]> {
+    return await this.compoundRepository.find();
+  }
 }
