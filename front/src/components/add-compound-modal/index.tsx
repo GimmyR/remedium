@@ -2,7 +2,7 @@
 
 import { Compound } from "@/interfaces/compound";
 import { API_URL } from "@/lib/urls";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AddCompound from "./add-compound";
 
 type Props = {

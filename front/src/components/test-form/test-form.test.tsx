@@ -1,6 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import TestForm from ".";
-import { Compound } from "@/interfaces/compound";
 
 global.fetch = jest.fn();
 
