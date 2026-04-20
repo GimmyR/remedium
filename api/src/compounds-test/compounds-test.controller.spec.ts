@@ -10,6 +10,8 @@ import { Compound } from 'src/compound/compound.entity';
 import { TestDetail } from 'src/test-detail/test-detail.entity';
 import { TestDetailService } from 'src/test-detail/test-detail.service';
 import request from 'supertest';
+import { App } from 'supertest/types';
+import { CompoundTestDto } from './compound-test.dto';
 
 describe('CompoundsTestController', () => {
   let app: INestApplication;
@@ -63,14 +65,15 @@ describe('CompoundsTestController', () => {
   it('should return error', async () => {
     const newTest = [{ compoundId: 1, amount: 200 }];
 
-    const res = await request(app.getHttpServer())
+    const res = await request(app.getHttpServer() as App)
       .post('/api/compounds-test')
       .send(newTest);
 
     expect(res.status).toBe(201);
-    expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body.length).toBe(1);
-    expect(res.body[0].error).toBe(true);
-    expect(res.body[0].message).not.toBe(undefined);
+    const tests = res.body as CompoundTestDto[];
+    expect(Array.isArray(tests)).toBe(true);
+    expect(tests.length).toBe(1);
+    expect(tests[0].error).toBe(true);
+    expect(tests[0].message).not.toBe(undefined);
   });
 });
