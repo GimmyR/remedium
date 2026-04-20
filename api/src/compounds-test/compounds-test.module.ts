@@ -9,8 +9,8 @@ import { TestDetailService } from 'src/test-detail/test-detail.service';
 import { TestDetail } from 'src/test-detail/test-detail.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Compound, CompoundsTest, TestDetail])],
-  controllers: [CompoundsTestController],
-  providers: [CompoundService, CompoundsTestService, TestDetailService],
+    imports: [TypeOrmModule.forFeature([Compound, CompoundsTest, TestDetail])],
+    controllers: [CompoundsTestController],
+    providers: [CompoundService, CompoundsTestService, TestDetailService],
 })
 export class CompoundsTestModule {}

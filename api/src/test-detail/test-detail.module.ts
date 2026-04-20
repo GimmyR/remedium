@@ -6,7 +6,7 @@ import { CompoundService } from 'src/compound/compound.service';
 import { Compound } from 'src/compound/compound.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TestDetail, Compound])],
-  providers: [TestDetailService, CompoundService],
+    imports: [TypeOrmModule.forFeature([TestDetail, Compound])],
+    providers: [TestDetailService, CompoundService],
 })
 export class TestDetailModule {}
