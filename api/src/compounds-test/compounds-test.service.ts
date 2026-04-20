@@ -18,7 +18,7 @@ export class CompoundsTestService {
   async makeTests(tests: CompoundTestDto[]): Promise<CompoundTestDto[]> {
     const promises = tests.map((test) => this.makeUniqueTest(test));
     const result = await Promise.all(promises);
-    this.saveTests(result);
+    await this.saveTests(result);
     return result;
   }
 
@@ -40,6 +40,6 @@ export class CompoundsTestService {
   private async saveTests(tests: CompoundTestDto[]) {
     const newTest = { testDate: new Date() };
     const savedTest = await this.compoundsTestRepository.save(newTest);
-    this.testDetailService.saveDetails(savedTest, tests);
+    await this.testDetailService.saveDetails(savedTest, tests);
   }
 }
