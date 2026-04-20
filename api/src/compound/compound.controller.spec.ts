@@ -6,6 +6,7 @@ import { Compound } from './compound.entity';
 import { Repository } from 'typeorm';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
+import { App } from 'supertest/types';
 
 describe('CompoundController', () => {
   let app: INestApplication;
@@ -54,13 +55,14 @@ describe('CompoundController', () => {
   });
 
   it('should return an array of one compound', () => {
-    return request(app.getHttpServer())
+    return request(app.getHttpServer() as App)
       .get('/api/compound/all')
       .expect(200)
       .expect((res) => {
-        expect(Array.isArray(res.body)).toBe(true);
-        expect(res.body.length).toBe(1);
-        expect(res.body[0].title).toBe('Paracetamol');
+        const body = res.body as Compound[];
+        expect(Array.isArray(body)).toBe(true);
+        expect(body.length).toBe(1);
+        expect(body[0].title).toBe('Paracetamol');
       });
   });
 });
