@@ -40,6 +40,6 @@ export class CompoundsTestService {
   private async saveTests(tests: CompoundTestDto[]) {
     const newTest = { testDate: new Date() };
     const savedTest = await this.compoundsTestRepository.save(newTest);
-    this.testDetailService.saveDetails(savedTest, tests);
+    await this.testDetailService.saveDetails(savedTest, tests);
   }
 }

@@ -15,12 +15,12 @@ export class TestDetailService {
   ) {}
 
   async saveDetails(test: CompoundsTest, details: CompoundTestDto[]) {
-    details.forEach(async (detail) =>
-      this.testDetailRepository.save({
+    for (const detail of details) {
+      await this.testDetailRepository.save({
         test: test,
         compound: await this.compoundService.findOne(detail.compoundId),
         amount: detail.amount,
-      }),
-    );
+      });
+    }
   }
 }
