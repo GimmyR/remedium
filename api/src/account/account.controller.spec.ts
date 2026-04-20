@@ -13,58 +13,58 @@ import { AccountDto } from './account.dto';
 import { App } from 'supertest/types';
 
 describe('UserController', () => {
-  let app: INestApplication;
-  let repository: Repository<Role>;
+    let app: INestApplication;
+    let repository: Repository<Role>;
 
-  beforeAll(async () => {
-    process.env.JWT_SECRET =
-      'loremipsumdolorsitametconsecteturadipiscingelitseddoeiusmodtempx';
-    process.env.PASSWORD_STRENGTH = '12';
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot({
-          type: 'sqlite',
-          database: ':memory:',
-          entities: [Account, Role],
-          synchronize: true,
-        }),
-        TypeOrmModule.forFeature([Account, Role]),
-      ],
-      controllers: [AccountController],
-      providers: [AccountService, RoleService, JwtService],
-    }).compile();
+    beforeAll(async () => {
+        process.env.JWT_SECRET = 'loremipsumdolorsitametconsecteturadipiscingelitseddoeiusmodtempx';
+        process.env.PASSWORD_STRENGTH = '12';
 
-    app = module.createNestApplication();
-    await app.init();
-    repository = module.get<Repository<Role>>(getRepositoryToken(Role));
-  });
+        const module: TestingModule = await Test.createTestingModule({
+            imports: [
+                TypeOrmModule.forRoot({
+                    type: 'sqlite',
+                    database: ':memory:',
+                    entities: [Account, Role],
+                    synchronize: true,
+                }),
+                TypeOrmModule.forFeature([Account, Role]),
+            ],
+            controllers: [AccountController],
+            providers: [AccountService, RoleService, JwtService],
+        }).compile();
 
-  afterAll(async () => {
-    await app.close();
-  });
+        app = module.createNestApplication();
+        await app.init();
+        repository = module.get<Repository<Role>>(getRepositoryToken(Role));
+    });
 
-  beforeEach(async () => {
-    await repository.clear();
-    await repository.save([{ id: 1, name: 'Client' }]);
-  });
+    afterAll(async () => {
+        await app.close();
+    });
 
-  it('should be defined', () => {
-    expect(repository).toBeDefined();
-  });
+    beforeEach(async () => {
+        await repository.clear();
+        await repository.save([{ id: 1, name: 'Client' }]);
+    });
 
-  it('should return Account', async () => {
-    const newAccount: AccountDto = {
-      username: 'johndoe',
-      password: 'pwd123',
-    };
+    it('should be defined', () => {
+        expect(repository).toBeDefined();
+    });
 
-    const res = await request(app.getHttpServer() as App)
-      .post('/api/account/create')
-      .send(newAccount);
+    it('should return Account', async () => {
+        const newAccount: AccountDto = {
+            username: 'johndoe',
+            password: 'pwd123',
+        };
 
-    expect(res.status).toBe(201);
-    const body = res.body as AccountDto;
-    expect(body).toBeDefined();
-    expect(body.username).toBe(newAccount.username);
-  });
+        const res = await request(app.getHttpServer() as App)
+            .post('/api/account/create')
+            .send(newAccount);
+
+        expect(res.status).toBe(201);
+        const body = res.body as AccountDto;
+        expect(body).toBeDefined();
+        expect(body.username).toBe(newAccount.username);
+    });
 });

@@ -6,17 +6,14 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 @ApiTags('compounds-test')
 @Controller('api/compounds-test')
 export class CompoundsTestController {
-  constructor(private readonly compoundsTestService: CompoundsTestService) {}
+    constructor(private readonly compoundsTestService: CompoundsTestService) {}
 
-  @Post()
-  @ApiOperation({ summary: 'Make test for given compounds' })
-  @ApiBody({ type: [CompoundTestDto] })
-  @ApiResponse({ status: HttpStatus.CREATED, description: 'Tests done' })
-  @ApiResponse({
-    status: HttpStatus.INTERNAL_SERVER_ERROR,
-    description: 'Unknown error',
-  })
-  async testCompounds(@Body() tests: CompoundTestDto[]) {
-    return await this.compoundsTestService.makeTests(tests);
-  }
+    @Post()
+    @ApiOperation({ summary: 'Make test for given compounds' })
+    @ApiBody({ type: [CompoundTestDto] })
+    @ApiResponse({ status: HttpStatus.CREATED, description: 'Tests done' })
+    @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Unknown error' })
+    async testCompounds(@Body() tests: CompoundTestDto[]) {
+        return await this.compoundsTestService.makeTests(tests);
+    }
 }
