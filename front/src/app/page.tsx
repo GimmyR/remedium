@@ -1,6 +1,6 @@
 import TestForm from "@/components/test-form";
 
-export default function Home() {
+export default function HomePage() {
     return (
         <main className="min-vh-100 bg-light pt-5">
             <div className="d-flex flex-column align-items-center pt-5">
