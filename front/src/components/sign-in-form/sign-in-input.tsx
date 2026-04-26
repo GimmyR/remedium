@@ -11,7 +11,7 @@ export default function SignInInput({ type, icon, name, placeholder } : Props) {
     return (
         <div className="input-group mb-3">
             <span className="input-group-text rounded-0" id={basicAddon}>
-                <i className={`bi bi-${icon}`}></i>
+                <i className={`bi bi-${icon}`} aria-label={`icon-${icon}`} role="icon"></i>
             </span>
             <input type={type} className="form-control rounded-0" name={name} placeholder={placeholder} aria-label={name.charAt(0).toUpperCase() + name.slice(1)} aria-describedby={basicAddon}/>
         </div>
