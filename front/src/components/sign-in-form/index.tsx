@@ -32,8 +32,8 @@ export default function SignInForm() {
 
     return (
         <form className="pt-4 pt-lg-4" onSubmit={handleSubmit}>
-            <SignInInput type="text" icon="person" name="username" placeholder="johndoe"/>
-            <SignInInput type="password" icon="lock" name="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"/>
+            <SignInInput type="text" icon="person" name="username" placeholder="Username"/>
+            <SignInInput type="password" icon="lock" name="password" placeholder="Password"/>
             <button type="submit" className="btn btn-dark rounded-0 col-12 mt-2 mt-lg-2">Submit</button>
         </form>
     );
