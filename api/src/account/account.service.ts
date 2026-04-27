@@ -42,7 +42,7 @@ export class AccountService implements OnModuleInit {
         if (!salt) throw new InternalServerErrorException('Password strength is undefined');
 
         const hashedPassword = await hash(user.password, parseInt(salt));
-        const adminRole = await this.roleService.findUnique('Admin');
+        const adminRole = await this.roleService.createAdmin();
         return await this.userRepository.save({ ...user, password: hashedPassword, roles: [adminRole] });
     }
 
