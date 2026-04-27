@@ -12,13 +12,15 @@ import request from 'supertest';
 import { AccountDto } from './account.dto';
 import { App } from 'supertest/types';
 
-describe('UserController', () => {
+describe('AccountController', () => {
     let app: INestApplication;
     let repository: Repository<Role>;
 
     beforeAll(async () => {
         process.env.JWT_SECRET = 'loremipsumdolorsitametconsecteturadipiscingelitseddoeiusmodtempx';
         process.env.PASSWORD_STRENGTH = '12';
+        process.env.ADMIN_USERNAME = 'admin';
+        process.env.ADMIN_PASSWORD = 'pwdAdmin';
 
         const module: TestingModule = await Test.createTestingModule({
             imports: [
