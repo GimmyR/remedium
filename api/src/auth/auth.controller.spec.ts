@@ -22,6 +22,8 @@ describe('AuthController', () => {
     beforeAll(async () => {
         process.env.JWT_SECRET = 'loremipsumdolorsitametconsecteturadipiscingelitseddoeiusmodtempx';
         process.env.PASSWORD_STRENGTH = '12';
+        process.env.ADMIN_USERNAME = 'admin';
+        process.env.ADMIN_PASSWORD = 'pwdAdmin';
 
         const module: TestingModule = await Test.createTestingModule({
             imports: [
