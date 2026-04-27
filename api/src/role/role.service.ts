@@ -22,4 +22,13 @@ export class RoleService {
 
         return result;
     }
+
+    async createAdmin(): Promise<Role> {
+        const role = await this.roleRepository.findOneBy({ name: "Admin" });
+
+        if(!role)
+            return await this.roleRepository.save({ name: "Admin" });
+
+        else return role;
+    }
 }
