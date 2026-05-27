@@ -46,3 +46,9 @@ export async function signedInAsAdmin() {
 
     return res.ok;
 }
+
+export async function signOut() {
+    const cookieStore = await cookies();
+    cookieStore.delete("access_token");
+    redirect("/", RedirectType.push);
+}
