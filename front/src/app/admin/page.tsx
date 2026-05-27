@@ -1,4 +1,8 @@
-export default function AdminHomePage() {
+import { verifyAdminAuth } from "../actions";
+
+export default async function AdminHomePage() {
+    await verifyAdminAuth();
+    
     return (
         <main className="min-vh-100 bg-light pt-5">
             <div className="d-flex flex-column align-items-center pt-5">
