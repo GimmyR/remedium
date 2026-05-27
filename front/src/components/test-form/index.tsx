@@ -48,7 +48,7 @@ export default function TestForm() {
 
     return (
         <>
-            <form className="col-12 col-lg-3 px-5 pt-3" onSubmit={handleSubmit}>
+            <form className="col-12 col-lg-3 px-5 px-lg-0 pt-3" onSubmit={handleSubmit}>
                 {compoundsToTest.map((compound, index) => <TestInput key={compound.id} compound={compound} removeCompound={removeCompound} error={setError(index, compound.id)}/>)}
                 <div className="d-flex flex-column flex-lg-row mt-3">
                     <div className="col-lg-6 mb-3 mb-lg-0 pe-lg-1">
