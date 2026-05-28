@@ -1,5 +1,4 @@
-import { API_URL } from "@/lib/urls";
-import { verifyAdminAuth } from "../actions";
+import { verifyAdminAuth } from "@/actions/authentication";
 import CompoundsList from "@/components/compounds-list";
 import { fetchAllCompounds } from "@/actions/compound";
 

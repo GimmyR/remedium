@@ -3,7 +3,7 @@
 import { FormEvent } from "react";
 import SignInInput from "./sign-in-input";
 import { API_URL } from "@/lib/urls";
-import { saveAccessToken } from "@/app/actions";
+import { saveAccessToken } from "@/actions/authentication";
 
 export default function SignInForm() {
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {

@@ -1,4 +1,4 @@
-import { signedInAsAdmin } from "@/app/actions";
+import { signedInAsAdmin } from "@/actions/authentication";
 import Link from "next/link";
 import ConfirmModal from "./confirm-modal";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { signOut } from "@/app/actions";
+import { signOut } from "@/actions/authentication";
 
 export default function ConfirmModal() {
     const handleClick = async () => {
