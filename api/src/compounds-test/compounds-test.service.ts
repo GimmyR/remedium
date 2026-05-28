@@ -25,7 +25,7 @@ export class CompoundsTestService {
     private async makeUniqueTest(test: CompoundTestDto): Promise<CompoundTestDto> {
         const compound = await this.compoundService.findOne(test.compoundId);
 
-        if (test.amount < compound.min || test.amount > compound.max) {
+        if ((compound.min != undefined && test.amount < compound.min) || (compound.max != undefined && test.amount > compound.max)) {
             test.error = true;
             test.message = `Should be between ${compound.min} and ${compound.max}`;
             return test;

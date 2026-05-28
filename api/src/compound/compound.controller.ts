@@ -1,6 +1,10 @@
-import { Controller, Get, HttpStatus, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { CompoundService } from './compound.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { SaveCompoundRequest } from './compound.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
 
 @ApiTags('compound')
 @Controller('api/compound')
@@ -13,5 +17,12 @@ export class CompoundController {
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Unknown error' })
     async findAll() {
         return await this.compoundService.findAll();
+    }
+
+    @Post()
+    @UseGuards(AuthGuard, RolesGuard)
+    @Roles("Admin")
+    async create(@Body() compound: SaveCompoundRequest) {
+        return await this.compoundService.create(compound);
     }
 }

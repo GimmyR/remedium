@@ -1,8 +1,8 @@
 export interface Compound {
-    id: number;
+    id?: number;
     title: string;
-    unit: string;
-    min: number;
-    max: number;
+    unit?: string;
+    min?: number;
+    max?: number;
     active: boolean;
 }
