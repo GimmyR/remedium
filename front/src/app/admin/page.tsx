@@ -1,6 +1,7 @@
 import { verifyAdminAuth } from "@/actions/authentication";
 import CompoundsList from "@/components/compounds-list";
 import { fetchAllCompounds } from "@/actions/compound";
+import Link from "next/link";
 
 export default async function AdminHomePage() {
     await verifyAdminAuth();
@@ -14,9 +15,9 @@ export default async function AdminHomePage() {
                     <CompoundsList compounds={compounds}/>
                 </div>
             </div>
-            <button type="button" className="btn btn-dark position-fixed bottom-0 end-0 mb-5 me-5">
+            <Link href="/admin/compound/add" type="button" className="btn btn-dark position-fixed bottom-0 end-0 mb-5 me-5">
                 <i className="bi bi-plus-lg"></i><span className="d-none d-md-inline ms-2 me-1">Add compound</span>
-            </button>
+            </Link>
         </main>
     );
 }
