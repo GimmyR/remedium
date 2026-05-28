@@ -92,3 +92,23 @@ export async function patchActive(id: number, active: boolean) {
 
     else throw new Error(data.message);
 }
+
+export async function removeCompound(id: number) {
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get("access_token");
+
+    const res = await fetch(`${API_URL}/api/compound/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken ? accessToken.value : ''}`
+        }
+    });
+
+    const data = await res.json();
+
+    if(res.ok)
+        revalidatePath("/");
+
+    else throw new Error(data.message);
+}

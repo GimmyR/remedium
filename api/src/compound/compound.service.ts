@@ -33,4 +33,8 @@ export class CompoundService {
     async update(compound: UpdateActiveRequest) {
         return await this.compoundRepository.update({ id: compound.id }, { active: compound.active });
     }
+
+    async remove(id: number) {
+        return await this.compoundRepository.delete({ id: id });
+    }
 }

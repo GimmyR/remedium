@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { CompoundService } from './compound.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SaveCompoundRequest, UpdateActiveRequest } from './compound.dto';
@@ -17,6 +17,13 @@ export class CompoundController {
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Unknown error' })
     async findAll() {
         return await this.compoundService.findAll();
+    }
+
+    @Get(':id')
+    @UseGuards(AuthGuard, RolesGuard)
+    @Roles("Admin")
+    async findUnique(@Param("id") id: number) {
+        return await this.compoundService.findOne(id);
     }
 
     @Post()
@@ -40,10 +47,10 @@ export class CompoundController {
         return await this.compoundService.update(compound);
     }
 
-    @Get(':id')
+    @Delete(':id')
     @UseGuards(AuthGuard, RolesGuard)
     @Roles("Admin")
-    async findUnique(@Param("id") id: number) {
-        return await this.compoundService.findOne(id);
+    async remove(@Param("id") id: number) {
+        return await this.compoundService.remove(id);
     }
 }

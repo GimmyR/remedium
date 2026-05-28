@@ -1,4 +1,4 @@
-import { patchActive } from "@/actions/compound";
+import { patchActive, removeCompound } from "@/actions/compound";
 import { Compound } from "@/interfaces/compound";
 import Link from "next/link";
 
@@ -9,6 +9,10 @@ type Props = {
 export default function CompoundItem({ compound } : Props) {
     const toggleActive = async (id: number, active: boolean) => {
         await patchActive(id, !active);
+    };
+
+    const remove = async (id: number) => {
+        await removeCompound(id);
     };
 
     return (
@@ -30,7 +34,7 @@ export default function CompoundItem({ compound } : Props) {
                 </button>
             </td>
             <td className="text-center">
-                <button type="button" className="btn btn-warning fw-bold">
+                <button type="button" onClick={() => remove(compound.id ? compound.id : 0)} className="btn btn-warning fw-bold">
                     <i className="bi bi-trash"></i><span className="d-none d-md-inline ms-2 me-1">Remove</span>
                 </button>
             </td>
