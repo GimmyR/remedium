@@ -28,7 +28,7 @@ export default function CompoundsList({ compounds } : Props) {
                     <td>{compound.min}</td>
                     <td>{compound.max}</td>
                     <td className="text-center">
-                        <Link href="#" className="btn btn-secondary">
+                        <Link href={`/admin/compound/edit/${compound.id}`} className="btn btn-secondary">
                             <i className="bi bi-pencil"></i><span className="d-none d-md-inline ms-2 me-1">Edit</span>
                         </Link>
                     </td>

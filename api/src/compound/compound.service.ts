@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Compound } from './compound.entity';
 import { Repository } from 'typeorm';
@@ -23,9 +23,9 @@ export class CompoundService {
         return await this.compoundRepository.find();
     }
 
-    async create(compound: SaveCompoundRequest) {
+    async save(compound: SaveCompoundRequest) {
         if(compound.min != undefined && compound.max != undefined && compound.min >= compound.max)
-            throw new Error("Min should be lower than max");
+            throw new BadRequestException("Min should be lower than max");
 
         return await this.compoundRepository.save(compound);
     }
