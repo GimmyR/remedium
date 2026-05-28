@@ -1,7 +1,7 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { CompoundService } from './compound.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SaveCompoundRequest } from './compound.dto';
+import { SaveCompoundRequest, UpdateActiveRequest } from './compound.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
@@ -31,6 +31,13 @@ export class CompoundController {
     @Roles("Admin")
     async update(@Body() compound: SaveCompoundRequest) {
         return await this.compoundService.save(compound);
+    }
+
+    @Patch()
+    @UseGuards(AuthGuard, RolesGuard)
+    @Roles("Admin")
+    async updateActive(@Body() compound: UpdateActiveRequest) {
+        return await this.compoundService.update(compound);
     }
 
     @Get(':id')

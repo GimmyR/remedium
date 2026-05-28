@@ -2,6 +2,7 @@
 
 import { Compound } from "@/interfaces/compound";
 import { API_URL } from "@/lib/urls";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect, RedirectType } from "next/navigation";
 
@@ -67,6 +68,27 @@ export async function updateCompound(compound: Compound) {
 
     if(res.ok)
         redirect("/admin", RedirectType.push);
+
+    else throw new Error(data.message);
+}
+
+export async function patchActive(id: number, active: boolean) {
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get("access_token");
+
+    const res = await fetch(`${API_URL}/api/compound/`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken ? accessToken.value : ''}`
+        },
+        body: JSON.stringify({ id: id, active: active })
+    });
+
+    const data = await res.json();
+
+    if(res.ok)
+        revalidatePath("/");
 
     else throw new Error(data.message);
 }

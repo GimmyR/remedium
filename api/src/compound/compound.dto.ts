@@ -23,3 +23,12 @@ export class SaveCompoundRequest {
     @IsDefined({ message: "Active is missing" })
     active: boolean;
 }
+
+export class UpdateActiveRequest {
+    @IsDefined({ message: "ID is missing" })
+    @IsPositive({ message: "ID should be a positive number" })
+    id: number;
+
+    @IsDefined({ message: "Active is missing" })
+    active: boolean;
+}
