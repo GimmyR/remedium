@@ -32,7 +32,7 @@ export default function ConfirmRemove({ toRemove, reset } : Props) {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-body text-center">
-                        Are you sure you want to remove this compound ?
+                        Are you sure you want to remove this compound (ID = {toRemove?.id}) ?
                     </div>
                     <div className="modal-footer d-flex flex-row justify-content-center">
                         <button type="button" onClick={dismiss} className="btn btn-secondary col-5">No</button>
