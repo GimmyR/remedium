@@ -98,4 +98,12 @@ describe('CompoundController', () => {
                 expect(compound.title).toBe('Ibuprofen');
             });
     });
+
+    it('should edit one compound', () => {
+        return request(app.getHttpServer() as App)
+            .put('/api/compounds')
+            .set('Authorization', `Bearer ${mockToken}`)
+            .send({ id: 1, title: "Paracetamol", unit: "mg", min: "200", max: "800", active: true })
+            .expect(200);
+    });
 });
