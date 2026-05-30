@@ -31,7 +31,7 @@ export default function ConfirmRemove({ toRemove, reset } : Props) {
         <div className="modal fade" id="confirm-remove-compound" tabIndex={-1} aria-hidden="true">
             <div className="modal-dialog">
                 <div className="modal-content">
-                    <div className="modal-body text-center">
+                    <div className="modal-body text-center" data-testid="confirm-remove-message">
                         Are you sure you want to remove this compound (ID = {toRemove?.id}) ?
                     </div>
                     <div className="modal-footer d-flex flex-row justify-content-center">

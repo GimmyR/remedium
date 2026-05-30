@@ -8,6 +8,6 @@ export default createJestConfig({
     setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
     testEnvironment: "jest-environment-jsdom",
     moduleNameMapper: {
-        '^@/(.*)$': '<rootDir>/$1',
+        '^@/(.*)$': '<rootDir>/src/$1',
     }
 });
