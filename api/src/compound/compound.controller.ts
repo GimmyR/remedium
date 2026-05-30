@@ -6,13 +6,13 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 
-@ApiTags('compound')
+@ApiTags('compounds')
 @ApiBearerAuth('access-token')
-@Controller('api/compound')
+@Controller('api/compounds')
 export class CompoundController {
     constructor(private readonly compoundService: CompoundService) {}
 
-    @Get('all')
+    @Get()
     @ApiOperation({ summary: 'Get all compounds' })
     @ApiResponse({ status: HttpStatus.OK, description: 'Retrieve all chemical compounds' })
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Unknown error' })

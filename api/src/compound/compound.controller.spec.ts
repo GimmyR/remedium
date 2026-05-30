@@ -47,7 +47,7 @@ describe('CompoundController', () => {
 
     it('should return an array of one compound', () => {
         return request(app.getHttpServer() as App)
-            .get('/api/compound/all')
+            .get('/api/compounds')
             .expect(200)
             .expect((res) => {
                 const body = res.body as Compound[];
