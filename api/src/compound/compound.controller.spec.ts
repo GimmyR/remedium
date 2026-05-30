@@ -114,4 +114,11 @@ describe('CompoundController', () => {
             .send({ id: 1, active: false })
             .expect(200);
     });
+
+    it('should remove one compound', () => {
+        return request(app.getHttpServer() as App)
+            .delete('/api/compounds/1')
+            .set('Authorization', `Bearer ${mockToken}`)
+            .expect(200);
+    });
 });
