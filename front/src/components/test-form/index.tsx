@@ -38,7 +38,7 @@ export default function TestForm() {
         setCompoundsToTest([...compoundsToTest]);
     };
 
-    const setError = (index: number, id: number) => {
+    const setError = (index: number, id: number | undefined) => {
         if(testedCompounds.length > 0) {
             if(testedCompounds[index])
                 return testedCompounds[index].compoundId == id ? { status: testedCompounds[index].error, message: testedCompounds[index].message } : undefined;
