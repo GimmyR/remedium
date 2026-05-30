@@ -106,4 +106,12 @@ describe('CompoundController', () => {
             .send({ id: 1, title: "Paracetamol", unit: "mg", min: "200", max: "800", active: true })
             .expect(200);
     });
+
+    it('should edit partially one compound', () => {
+        return request(app.getHttpServer() as App)
+            .patch('/api/compounds')
+            .set('Authorization', `Bearer ${mockToken}`)
+            .send({ id: 1, active: false })
+            .expect(200);
+    });
 });
