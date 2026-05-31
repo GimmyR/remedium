@@ -28,4 +28,11 @@ describe("Test AdminHomePage component", () => {
         const title = screen.getByText("Paracetamol");
         expect(title).toBeInTheDocument();
     });
+
+    it("Should display a 'Add compound' button/link", async () => {
+        const Admin = await (AdminHomePage() as any);
+        render(Admin);
+        const link = screen.getByRole("link", { name: /add compound/i });
+        expect(link).toBeInTheDocument();
+    });
 });
