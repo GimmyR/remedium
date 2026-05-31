@@ -46,7 +46,7 @@ describe('CompoundController', () => {
         await app.init();
         repository = module.get<Repository<Compound>>(getRepositoryToken(Compound));
         jwtService = module.get<JwtService>(JwtService);
-        mockToken = jwtService.sign({ sub: "user-123", roles: ['Admin'] });
+        mockToken = jwtService.sign({ sub: 'user-123', roles: ['Admin'] });
     });
 
     beforeEach(async () => {
@@ -77,7 +77,7 @@ describe('CompoundController', () => {
     it('should return one compound', () => {
         return request(app.getHttpServer() as App)
             .get('/api/compounds/1')
-            .set("Authorization", `Bearer ${mockToken}`)
+            .set('Authorization', `Bearer ${mockToken}`)
             .expect(200)
             .expect((res) => {
                 const compound = res.body as Compound;
@@ -90,7 +90,7 @@ describe('CompoundController', () => {
         return request(app.getHttpServer() as App)
             .post('/api/compounds')
             .set('Authorization', `Bearer ${mockToken}`)
-            .send({ title: "Ibuprofen", unit: "mg", min: "200", max: "400", active: true })
+            .send({ title: 'Ibuprofen', unit: 'mg', min: '200', max: '400', active: true })
             .expect(201)
             .expect((res) => {
                 const compound = res.body as Compound;
@@ -103,7 +103,7 @@ describe('CompoundController', () => {
         return request(app.getHttpServer() as App)
             .put('/api/compounds')
             .set('Authorization', `Bearer ${mockToken}`)
-            .send({ id: 1, title: "Paracetamol", unit: "mg", min: "200", max: "800", active: true })
+            .send({ id: 1, title: 'Paracetamol', unit: 'mg', min: '200', max: '800', active: true })
             .expect(200);
     });
 

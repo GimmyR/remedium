@@ -59,7 +59,10 @@ describe('AuthController', () => {
 
     beforeEach(async () => {
         await roleRepository.clear();
-        await roleRepository.save([{ id: 1, name: 'Client' }, { id: 2, name: "Admin" }]);
+        await roleRepository.save([
+            { id: 1, name: 'Client' },
+            { id: 2, name: 'Admin' },
+        ]);
 
         await accountRepository.clear();
         await accountRepository.save([
@@ -74,7 +77,7 @@ describe('AuthController', () => {
                 username: 'admin',
                 password: '$2a$12$LeJsCJuB1N6EEpLlW5ybterDTnK8Smn3qviiF6K4wgvdRHgpV.jaK',
                 roles: [{ id: 2, name: 'Admin' }],
-            }
+            },
         ]);
     });
 
@@ -118,8 +121,8 @@ describe('AuthController', () => {
         expect(body.access_token).toBeDefined();
 
         const res2 = await request(app.getHttpServer() as App)
-            .get("/api/auth/is-admin")
-            .set("Authorization", `Bearer ${body.access_token}`);
+            .get('/api/auth/is-admin')
+            .set('Authorization', `Bearer ${body.access_token}`);
 
         expect(res2.status).toBe(200);
         const body2 = res2.body as { isAdmin: true };

@@ -24,12 +24,12 @@ export class AuthController {
 
     @UseGuards(AuthGuard, RolesGuard)
     @Roles('Admin')
-    @Get("is-admin")
-    @ApiOperation({ summary: "Check if authenticated user is admin" })
-    @ApiResponse({ status: HttpStatus.OK, description: "Authenticated user is admin" })
-    @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "There is no authenticated user" })
-    @ApiResponse({ status: HttpStatus.FORBIDDEN, description: "Authenticated user is not admin" })
+    @Get('is-admin')
+    @ApiOperation({ summary: 'Check if authenticated user is admin' })
+    @ApiResponse({ status: HttpStatus.OK, description: 'Authenticated user is admin' })
+    @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'There is no authenticated user' })
+    @ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Authenticated user is not admin' })
     async isAdmin() {
-        return { isAdmin: true };
+        return Promise.resolve({ isAdmin: true });
     }
 }

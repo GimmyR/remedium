@@ -24,8 +24,8 @@ export class CompoundService {
     }
 
     async save(compound: SaveCompoundRequest) {
-        if(compound.min != undefined && compound.max != undefined && compound.min >= compound.max)
-            throw new BadRequestException("Min should be lower than max");
+        if (compound.min != undefined && compound.max != undefined && compound.min >= compound.max)
+            throw new BadRequestException('Min should be lower than max');
 
         return await this.compoundRepository.save(compound);
     }

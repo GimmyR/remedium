@@ -11,10 +11,10 @@ export class Compound {
     @Column({ nullable: true })
     unit: string;
 
-    @Column({ type: "float", nullable: true })
+    @Column({ type: 'float', nullable: true })
     min: number;
 
-    @Column({ type: "float", nullable: true })
+    @Column({ type: 'float', nullable: true })
     max: number;
 
     @Column()
