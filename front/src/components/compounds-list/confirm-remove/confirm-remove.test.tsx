@@ -1,14 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import ConfirmRemove from ".";
 
-// 1. On mocke complètement le fichier qui contient les Server Actions
 jest.mock('@/actions/compound', () => ({
-  // Tu remplaces ici par le nom exact de la fonction exportée que ton composant utilise
   createCompound: jest.fn(() => Promise.resolve({ success: true })),
   deleteCompound: jest.fn(() => Promise.resolve({ success: true })), // Si tu as un delete
 }));
 
-// Si ton composant utilise aussi `next/navigation` (ex: useRouter), mocke-le aussi pour éviter d'autres erreurs :
 jest.mock('next/navigation', () => ({
   useRouter() {
     return { prefetch: () => null, push: jest.fn() };
