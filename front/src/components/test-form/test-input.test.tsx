@@ -6,7 +6,8 @@ const props = {
     compound: {
         id: 1,
         title: "Paracetamol",
-        unit: "mg"
+        unit: "mg",
+        active: true
     },
     removeCompound: (compound: Compound) => {}
 };

@@ -59,7 +59,10 @@ describe('AuthController', () => {
 
     beforeEach(async () => {
         await roleRepository.clear();
-        await roleRepository.save([{ id: 1, name: 'Client' }]);
+        await roleRepository.save([
+            { id: 1, name: 'Client' },
+            { id: 2, name: 'Admin' },
+        ]);
 
         await accountRepository.clear();
         await accountRepository.save([
@@ -68,6 +71,12 @@ describe('AuthController', () => {
                 username: 'johndoe',
                 password: '$2a$12$AiWntMCIWJkMWFyD6RIa/uIrRAup40XYpobOm3EjlSd6rKlyTOrnG',
                 roles: [{ id: 1, name: 'Client' }],
+            },
+            {
+                id: 2,
+                username: 'admin',
+                password: '$2a$12$LeJsCJuB1N6EEpLlW5ybterDTnK8Smn3qviiF6K4wgvdRHgpV.jaK',
+                roles: [{ id: 2, name: 'Admin' }],
             },
         ]);
     });
@@ -94,5 +103,30 @@ describe('AuthController', () => {
         const body = res.body as { access_token: string };
         expect(body).toBeDefined();
         expect(body.access_token).toBeDefined();
+    });
+
+    it('should be an admin and return true', async () => {
+        const credentials: AccountDto = {
+            username: 'admin',
+            password: 'pwdAdmin',
+        };
+
+        const res = await request(app.getHttpServer() as App)
+            .post('/api/auth/login')
+            .send(credentials);
+
+        expect(res.status).toBe(201);
+        const body = res.body as { access_token: string };
+        expect(body).toBeDefined();
+        expect(body.access_token).toBeDefined();
+
+        const res2 = await request(app.getHttpServer() as App)
+            .get('/api/auth/is-admin')
+            .set('Authorization', `Bearer ${body.access_token}`);
+
+        expect(res2.status).toBe(200);
+        const body2 = res2.body as { isAdmin: true };
+        expect(body2).toBeDefined();
+        expect(body2.isAdmin).toBe(true);
     });
 });

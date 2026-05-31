@@ -8,13 +8,13 @@ export class Compound {
     @Column()
     title: string;
 
-    @Column()
+    @Column({ nullable: true })
     unit: string;
 
-    @Column()
+    @Column({ type: 'float', nullable: true })
     min: number;
 
-    @Column()
+    @Column({ type: 'float', nullable: true })
     max: number;
 
     @Column()

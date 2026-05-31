@@ -1,9 +1,23 @@
-export default function AdminHomePage() {
+import { verifyAdminAuth } from "@/actions/authentication";
+import CompoundsList from "@/components/compounds-list";
+import { fetchAllCompounds } from "@/actions/compound";
+import Link from "next/link";
+
+export default async function AdminHomePage() {
+    await verifyAdminAuth();
+    const compounds = await fetchAllCompounds();
+    
     return (
-        <main className="min-vh-100 bg-light pt-5">
+        <main className="min-vh-100 bg-light pt-5 position-relative">
             <div className="d-flex flex-column align-items-center pt-5">
-                <h1 className="fs-2 fw-bold text-center mt-lg-3">Home page as admin</h1>
+                <h1 className="fs-2 fw-bold text-center mt-lg-3">List of all compounds</h1>
+                <div className="col-12 col-xl-8 col-xxl-6 mt-5">
+                    <CompoundsList compounds={compounds}/>
+                </div>
             </div>
+            <Link href="/admin/compound/add" type="button" className="btn btn-dark position-fixed bottom-0 end-0 mb-5 me-5">
+                <i className="bi bi-plus-lg"></i><span className="d-none d-md-inline ms-2 me-1">Add compound</span>
+            </Link>
         </main>
     );
 }
