@@ -114,7 +114,7 @@ describe('CompoundsTestController', () => {
         expect(tests[0].message).not.toBe(undefined);
     });
 
-    it("Should return compounds tests", async () => {
+    it("Should return compounds tests with details", async () => {
         return await request(app.getHttpServer() as App)
             .get("/api/compounds-tests")
             .set("Authorization", `Bearer ${mockToken}`)
@@ -125,6 +125,8 @@ describe('CompoundsTestController', () => {
                 expect(tests.length).toBe(1);
                 expect(tests[0].id).toBe(compoundsTest.id);
                 expect(tests[0].testDate).toBe(compoundsTest.testDate.toISOString());
+                expect(tests[0].details.length).toBe(1);
+                expect(tests[0].details[0].amount).toBe(testDetail.amount);
             });
     });
 });

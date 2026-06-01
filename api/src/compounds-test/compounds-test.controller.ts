@@ -24,7 +24,7 @@ export class CompoundsTestController {
     @Get()
     @UseGuards(AuthGuard, RolesGuard)
     @Roles("Admin")
-    @ApiOperation({ summary: "Find all compounds tests" })
+    @ApiOperation({ summary: "Find all compounds tests with details" })
     @ApiResponse({ status: HttpStatus.OK, description: "All compounds tests are found" })
     @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "No authenticated admin to use this endpoint correctly" })
     async findAllTests() {

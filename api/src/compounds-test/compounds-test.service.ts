@@ -48,6 +48,11 @@ export class CompoundsTestService {
         return await this.compoundsTestRepository.find({
             order: {
                 testDate: "ASC"
+            },
+            relations: {
+                details: {
+                    compound: true
+                }
             }
         });
     }
