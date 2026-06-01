@@ -3,8 +3,8 @@ import { CompoundTestDto } from './compound-test.dto';
 import { CompoundsTestService } from './compounds-test.service';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('compounds-test')
-@Controller('api/compounds-test')
+@ApiTags('compounds-tests')
+@Controller('api/compounds-tests')
 export class CompoundsTestController {
     constructor(private readonly compoundsTestService: CompoundsTestService) {}
 

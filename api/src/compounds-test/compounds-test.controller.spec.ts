@@ -55,7 +55,7 @@ describe('CompoundsTestController', () => {
         const newTest = [{ compoundId: 1, amount: 200 }];
 
         const res = await request(app.getHttpServer() as App)
-            .post('/api/compounds-test')
+            .post('/api/compounds-tests')
             .send(newTest);
 
         expect(res.status).toBe(201);
