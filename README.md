@@ -27,6 +27,10 @@ DB_USERNAME=your_db_username
 DB_PASSWORD=your_db_password
 DB_name=your_database_name
 
+# Admin
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=your_admin_password
+
 # Password hashing strength (bcrypt cost)
 PASSWORD_STRENGTH=12
 
