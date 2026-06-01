@@ -11,6 +11,12 @@ It is built with:
 - **PostgreSQL** for data persistence  
 - **Docker** for containerized deployment
 
+![Front-Office](./screenshots/front-office.png)
+
+![Back-Office](./screenshots/back-office.png)
+
+![API](./screenshots/api.png)
+
 ## Prerequisites
 
 Before building or running the application, make sure you have the following installed :
@@ -53,7 +59,7 @@ docker compose --profile prod up --build
 
 You can access the frontend application in your browser at http://localhost:3000 .
 
-The API documentation is available at http://localhost:8000/docs .
+The API documentation is available at http://localhost:8000/api .
 
 ## License
 
