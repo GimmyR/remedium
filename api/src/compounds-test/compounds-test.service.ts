@@ -47,7 +47,10 @@ export class CompoundsTestService {
     async findAll(): Promise<CompoundsTest[]> {
         return await this.compoundsTestRepository.find({
             order: {
-                testDate: "ASC"
+                testDate: "ASC",
+                details: {
+                    id: "ASC"
+                }
             },
             relations: {
                 details: {
