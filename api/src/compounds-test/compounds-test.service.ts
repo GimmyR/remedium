@@ -43,4 +43,20 @@ export class CompoundsTestService {
         const savedTest = await this.compoundsTestRepository.save(newTest);
         await this.testDetailService.saveDetails(savedTest, tests);
     }
+
+    async findAll(): Promise<CompoundsTest[]> {
+        return await this.compoundsTestRepository.find({
+            order: {
+                testDate: 'ASC',
+                details: {
+                    id: 'ASC',
+                },
+            },
+            relations: {
+                details: {
+                    compound: true,
+                },
+            },
+        });
+    }
 }

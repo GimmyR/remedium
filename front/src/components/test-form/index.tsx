@@ -16,7 +16,7 @@ export default function TestForm() {
         const formData = new FormData(event.currentTarget);
         const test = formData.entries().toArray().map(entry => ({ compoundId: entry[0], amount: entry[1] }));
         
-        await fetch(`${API_URL}/api/compounds-test`, {
+        await fetch(`${API_URL}/api/compounds-tests`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

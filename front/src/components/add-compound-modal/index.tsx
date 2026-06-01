@@ -15,7 +15,7 @@ export default function AddCompoundModal({ compoundsToTest, addCompound } : Prop
     const [search, setSearch] = useState<string>("");
 
     const fetchCompounds = async () => {
-        await fetch(`${API_URL}/api/compound/all`)
+        await fetch(`${API_URL}/api/compounds/`)
                 .then(res => res.json())
                 .then(data => setCompounds(data))
                 .catch(error => console.error(error));
