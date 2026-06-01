@@ -21,7 +21,7 @@ describe("Test Header component", () => {
     it("Should display Home and Tests navigation links", async () => {
         const HeaderComponent = await (Header() as any);
         render(HeaderComponent);
-        const homeLink = screen.getByRole("link", {name: /home/i});
+        const homeLink = screen.getByRole("link", {name: /compounds/i});
         expect(homeLink).toBeInTheDocument();
         const testsLink = screen.getByRole("link", {name: /tests/i});
         expect(testsLink).toBeInTheDocument();

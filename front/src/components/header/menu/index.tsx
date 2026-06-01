@@ -10,7 +10,7 @@ export default function Menu() {
 
     return (
         <div className="d-flex flex-row ms-3 ms-sm-4 ms-xl-5">
-            <Link href="/admin" className={`text-decoration-none ${activeOrNot("/admin")} me-3 me-sm-4`}>Home</Link>
+            <Link href="/admin" className={`text-decoration-none ${activeOrNot("/admin")} me-3 me-sm-4`}>Compounds</Link>
             <Link href="/admin/tests" className={`text-decoration-none ${activeOrNot("/admin/tests")}`}>Tests</Link>
         </div>
     );
