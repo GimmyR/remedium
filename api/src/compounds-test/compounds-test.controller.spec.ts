@@ -15,26 +15,26 @@ import { CompoundTestDto } from './compound-test.dto';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-const compound: Compound = { 
-    id: 1, 
-    title: 'Paracetamol', 
-    unit: 'mg', 
-    min: 500, 
-    max: 1000, 
-    active: true 
+const compound: Compound = {
+    id: 1,
+    title: 'Paracetamol',
+    unit: 'mg',
+    min: 500,
+    max: 1000,
+    active: true,
 };
 
 const compoundsTest: CompoundsTest = {
     id: 1,
     testDate: new Date(),
-    details: []
+    details: [],
 };
 
 const testDetail: TestDetail = {
     id: 1,
     test: compoundsTest,
     compound: compound,
-    amount: 200
+    amount: 200,
 };
 
 describe('CompoundsTestController', () => {
@@ -114,10 +114,10 @@ describe('CompoundsTestController', () => {
         expect(tests[0].message).not.toBe(undefined);
     });
 
-    it("Should return compounds tests with details", async () => {
+    it('Should return compounds tests with details', async () => {
         return await request(app.getHttpServer() as App)
-            .get("/api/compounds-tests")
-            .set("Authorization", `Bearer ${mockToken}`)
+            .get('/api/compounds-tests')
+            .set('Authorization', `Bearer ${mockToken}`)
             .expect(200)
             .expect((res) => {
                 const tests = res.body as CompoundsTest[];
