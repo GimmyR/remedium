@@ -1,53 +1,66 @@
-"use client";
-
 import { CompoundsTest } from "@/interfaces/compound-test";
 import { format } from "date-fns";
-import Link from "next/link";
-import "./tests-table.css";
-import TestDetailModal from "./test-detail-modal";
-import { useState } from "react";
-import { TestDetail } from "@/interfaces/test-detail";
 
 type Props = {
     tests: CompoundsTest[]
 };
 
 export default function TestsTable({ tests } : Props) {
-    const [details, setDetails] = useState<TestDetail[]>([]);
+    const formatTests = () => {
+        const results: any[] = tests.reduce((acc: any[], test: CompoundsTest) => {
+            for(const detail of test.details)
+                acc.push({
+                    id: test.id,
+                    detailId: detail.id,
+                    date: format(test.testDate, "dd/MM/yyyy HH:mm"),
+                    title: detail.compound.title,
+                    unit: detail.compound.unit,
+                    min: detail.compound.min,
+                    max: detail.compound.max,
+                    amount: detail.amount,
+                    status: isGood(detail)
+                });
 
-    const showDetails = (dets: TestDetail[]) => {
-        const bootstrap = require("bootstrap/dist/js/bootstrap.bundle.min.js");
-        const modal = new bootstrap.Modal("#test-detail-modal");
+            return acc;
+        }, []);
 
-        if(modal) {
-            setDetails([...dets]);
-            modal.show();
-        }
+        return results.sort((a, b) => a.id - b.id);
     };
 
+    const isGood = (test: any) => (test.min && test.min <= test.amount) && (test.max && test.max >= test.amount);
+
     return (
-        <>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tests.map(test => <tr key={test.id} className="align-middle">
-                        <td>{test.id}</td>
-                        <td>{format(test.testDate, "dd/MM/yyyy")}</td>
-                        <td>{format(test.testDate, "HH:mm")}</td>
-                        <td className="text-center">
-                            <Link href="#" onClick={() => showDetails(test.details)} className="text-decoration-none tests-table-row-link">See details</Link>
-                        </td>
-                    </tr>)}
-                </tbody>
-            </table>
-            <TestDetailModal details={details}/>
-        </>
+        <table className="table table-hover text-center">
+            <thead>
+                <tr>
+                    <th>Test ID</th>
+                    <th>Detail ID</th>
+                    <th>Date & Time</th>
+                    <th>Title</th>
+                    <th>Unit</th>
+                    <th>Min</th>
+                    <th>Max</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {formatTests().map(test => <tr key={`${test.id}-${test.detailId}`} className="align-middle">
+                    <td>{test.id}</td>
+                    <td>{test.detailId}</td>
+                    <td className="text-nowrap">{test.date}</td>
+                    <td>{test.title}</td>
+                    <td>{test.unit}</td>
+                    <td>{test.min}</td>
+                    <td>{test.max}</td>
+                    <td>{test.amount}</td>
+                    <td>
+                        <span className={`text-nowrap text-bg-${isGood(test) ? "success" : "danger"} ps-2 pe-3 py-1 rounded-4`}>
+                            <i className={`bi bi-${isGood(test) ? "check-circle-fill" : "x-circle-fill"} me-2`}></i>{isGood(test) ? "Good" : "Bad"}
+                        </span>
+                    </td>
+                </tr>)}
+            </tbody>
+        </table>
     );
 }

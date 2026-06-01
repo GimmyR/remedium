@@ -26,7 +26,9 @@ const tests = [
 describe("Test TestsTable component", () => {
     it("Should display a list of compounds test", () => {
         render(<TestsTable tests={tests}/>);
-        const date = screen.getByText(format(tests[0].testDate, "dd/MM/yyyy"));
+        const date = screen.getByText(format(tests[0].testDate, "dd/MM/yyyy HH:mm"));
         expect(date).toBeInTheDocument();
+        const title = screen.getByText(tests[0].details[0].compound.title);
+        expect(title).toBeInTheDocument();
     });
 });
