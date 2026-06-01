@@ -6,15 +6,15 @@ global.fetch = jest.fn();
 
 const props = {
     compoundsToTest: [
-        { id: 2, title: "Ibuprofen", unit: "mg" }
+        { id: 2, title: "Ibuprofen", unit: "mg", active: true }
     ],
     addCompound: (compound: Compound) => {}
 };
 
 const compounds = [
-    { id: 1, title: "Paracetamol", unit: "mg" },
-    { id: 2, title: "Ibuprofen", unit: "mg" },
-    { id: 3, title: "Aspirin", unit: "mg" }
+    { id: 1, title: "Paracetamol", unit: "mg", active: true },
+    { id: 2, title: "Ibuprofen", unit: "mg", active: true },
+    { id: 3, title: "Aspirin", unit: "mg", active: true }
 ];
 
 describe("Test AddCompoundModal component", () => {
