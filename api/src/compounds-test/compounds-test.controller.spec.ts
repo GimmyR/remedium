@@ -1,21 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { CompoundsTestController } from './compounds-test.controller';
 import { INestApplication } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { CompoundsTest } from './compounds-test.entity';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { CompoundsTestService } from './compounds-test.service';
 import { CompoundService } from 'src/compound/compound.service';
-import { Compound } from 'src/compound/compound.entity';
-import { TestDetail } from 'src/test-detail/test-detail.entity';
-import { TestDetailService } from 'src/test-detail/test-detail.service';
 import request from 'supertest';
 import { App } from 'supertest/types';
 import { CompoundTestDto } from './compound-test.dto';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { StartedPostgreSqlContainer } from '@testcontainers/postgresql';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { setupTestEnvironment } from '../../test/test-db.helper';
 
-const compound: Compound = {
+const compound = {
     id: 1,
     title: 'Paracetamol',
     unit: 'mg',
@@ -24,79 +18,46 @@ const compound: Compound = {
     active: true,
 };
 
-const compoundsTest: CompoundsTest = {
-    id: 1,
-    testDate: new Date(),
-    details: [],
-};
-
-const testDetail: TestDetail = {
-    id: 1,
-    test: compoundsTest,
-    compound: compound,
+const testDetail = {
+    compoundId: compound.id,
     amount: 200,
 };
 
 describe('CompoundsTestController', () => {
     let app: INestApplication;
-    let compoundRepository: Repository<Compound>;
-    let compoundsTestRepository: Repository<CompoundsTest>;
-    let testDetailRepository: Repository<TestDetail>;
+    let container: StartedPostgreSqlContainer;
+    let prisma: PrismaService;
+    let compoundService: CompoundService;
+    let compoundsTestService: CompoundsTestService;
     let jwtService: JwtService;
     let mockToken: string;
 
     beforeAll(async () => {
-        process.env.JWT_SECRET = 'loremipsumdolorsitametconsecteturadipiscingelitseddoeiusmodtempx';
-        process.env.PASSWORD_STRENGTH = '12';
-
-        const module: TestingModule = await Test.createTestingModule({
-            imports: [
-                TypeOrmModule.forRoot({
-                    type: 'sqlite',
-                    database: ':memory:',
-                    entities: [CompoundsTest, TestDetail, Compound],
-                    synchronize: true,
-                }),
-                TypeOrmModule.forFeature([CompoundsTest, TestDetail, Compound]),
-                JwtModule.registerAsync({
-                    imports: [ConfigModule],
-                    inject: [ConfigService],
-                    useFactory: (configService: ConfigService) => ({
-                        global: true,
-                        secret: configService.get<string>('JWT_SECRET'),
-                    }),
-                }),
-            ],
-            controllers: [CompoundsTestController],
-            providers: [CompoundsTestService, TestDetailService, CompoundService],
-        }).compile();
-
-        app = module.createNestApplication();
-        await app.init();
-        compoundRepository = module.get<Repository<Compound>>(getRepositoryToken(Compound));
-        compoundsTestRepository = module.get<Repository<CompoundsTest>>(getRepositoryToken(CompoundsTest));
-        testDetailRepository = module.get<Repository<TestDetail>>(getRepositoryToken(TestDetail));
-        jwtService = module.get<JwtService>(JwtService);
+        const env = await setupTestEnvironment();
+        app = env.app;
+        container = env.container;
+        prisma = app.get<PrismaService>(PrismaService);
+        compoundService = app.get<CompoundService>(CompoundService);
+        compoundsTestService = app.get<CompoundsTestService>(CompoundsTestService);
+        jwtService = app.get<JwtService>(JwtService);
         mockToken = jwtService.sign({ sub: 'user-123', roles: ['Admin'] });
+    }, 30000);
+
+    afterAll(async () => {
+        if(app)
+            await app.close();
+
+        if(container)
+            await container.stop();
     });
 
     beforeEach(async () => {
-        await testDetailRepository.clear();
-        await compoundsTestRepository.clear();
-        await compoundRepository.clear();
+        await prisma.testDetail.deleteMany({});
+        await prisma.compoundsTest.deleteMany({});
+        await prisma.compound.deleteMany({});
 
-        await compoundRepository.save([compound]);
-        await compoundsTestRepository.save([compoundsTest]);
-        await testDetailRepository.save([testDetail]);
-    });
-
-    afterAll(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 50));
-        await app.close();
-    });
-
-    it('should be defined', () => {
-        expect(compoundRepository).toBeDefined();
+        await compoundService.create(compound);
+        await compoundsTestService.makeTests([testDetail]);
     });
 
     it('should return error', async () => {
@@ -120,12 +81,11 @@ describe('CompoundsTestController', () => {
             .set('Authorization', `Bearer ${mockToken}`)
             .expect(200)
             .expect((res) => {
-                const tests = res.body as CompoundsTest[];
+                const tests = res.body;
                 expect(Array.isArray(tests)).toBe(true);
                 expect(tests.length).toBe(1);
-                expect(tests[0].id).toBe(compoundsTest.id);
-                expect(tests[0].testDate).toBe(compoundsTest.testDate.toISOString());
                 expect(tests[0].details.length).toBe(1);
+                expect(tests[0].details[0].compound.id).toBe(compound.id);
                 expect(tests[0].details[0].amount).toBe(testDetail.amount);
             });
     });
