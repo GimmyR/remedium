@@ -8,3 +8,6 @@ coverage
 *.log
 .vscode
 requests.http
+
+# SQL
+schema.sql
