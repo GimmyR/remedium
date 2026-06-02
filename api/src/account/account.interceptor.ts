@@ -1,5 +1,5 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
-import { Account } from 'generated/prisma/client';
+import { Account } from '@prisma/client';
 import { map, Observable } from 'rxjs';
 
 @Injectable()

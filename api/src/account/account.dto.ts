@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Role } from '@prisma/client';
 import { IsNotEmpty } from 'class-validator';
-import { Role } from 'generated/prisma/client';
 
 export class AccountDto {
     @ApiProperty({ example: 'johndoe' })
