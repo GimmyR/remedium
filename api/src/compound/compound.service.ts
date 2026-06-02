@@ -11,7 +11,7 @@ export class CompoundService {
     async findOne(id: number) {
         const compound = await this.prisma.compound.findUnique({
             where: {
-                id: id
+                id: typeof id === "string" ? parseInt(id) : id
             }
         });
 
@@ -28,24 +28,26 @@ export class CompoundService {
         });
     }
 
-    async save(compound: SaveCompoundRequest) {
+    async create(compound: SaveCompoundRequest) {
         if (compound.min != undefined && compound.max != undefined && compound.min >= compound.max)
             throw new BadRequestException('Min should be lower than max');
 
-        const { id, ...toSave } = compound;
-
-        if(id)
-            return await this.prisma.compound.update({
-                where: { id: id },
-                data: { ...compound }
-            });
-
-        else return await this.prisma.compound.create({
-            data: { ...toSave, active: true }
+        return await this.prisma.compound.create({
+            data: { ...compound, active: true }
         });
     }
 
-    async update(compound: UpdateActiveRequest) {
+    async update(compound: SaveCompoundRequest) {
+        if (compound.min != undefined && compound.max != undefined && compound.min >= compound.max)
+            throw new BadRequestException('Min should be lower than max');
+
+        return await this.prisma.compound.update({
+            where: { id: compound.id },
+            data: { ...compound }
+        });
+    }
+
+    async partiallyUpdate(compound: UpdateActiveRequest) {
         return await this.prisma.compound.update({
             where: {
                 id: compound.id
@@ -59,7 +61,7 @@ export class CompoundService {
     async remove(id: number) {
         return await this.prisma.compound.delete({
             where: {
-                id: id
+                id: typeof id === "string" ? parseInt(id) : id
             }
         });
     }
