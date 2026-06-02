@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AccountDto } from './account.dto';
 import { App } from 'supertest/types';
-import { StartedPostgreSqlContainer } from "@testcontainers/postgresql";
+import { StartedPostgreSqlContainer } from '@testcontainers/postgresql';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { setupTestEnvironment } from '../../test/test-db.helper';
 
@@ -19,18 +19,16 @@ describe('AccountController', () => {
     }, 30000);
 
     afterAll(async () => {
-        if(app)
-            await app.close();
+        if (app) await app.close();
 
-        if(container)
-            await container.stop();
+        if (container) await container.stop();
     });
 
     beforeEach(async () => {
         await prisma.account.deleteMany({});
         await prisma.role.deleteMany({});
         await prisma.role.create({
-            data: { id: 1, name: 'Client' }
+            data: { id: 1, name: 'Client' },
         });
     });
 

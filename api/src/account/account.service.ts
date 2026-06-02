@@ -8,7 +8,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class AccountService implements OnModuleInit {
     constructor(
         private readonly prisma: PrismaService,
-        private readonly roleService: RoleService
+        private readonly roleService: RoleService,
     ) {}
 
     async onModuleInit() {
@@ -29,10 +29,10 @@ export class AccountService implements OnModuleInit {
                 username: adminUser.username,
                 roles: {
                     some: {
-                        name: "Admin"
-                    }
-                }
-            }
+                        name: 'Admin',
+                    },
+                },
+            },
         });
 
         return admin != null;
@@ -51,9 +51,9 @@ export class AccountService implements OnModuleInit {
                 ...user,
                 password: hashedPassword,
                 roles: {
-                    connect: [adminRole]
-                }
-            }
+                    connect: [adminRole],
+                },
+            },
         });
     }
 
@@ -64,26 +64,26 @@ export class AccountService implements OnModuleInit {
 
         const hashedPassword = await hash(user.password, parseInt(salt));
         const role = await this.roleService.findUnique('Client');
-        
+
         return await this.prisma.account.create({
             data: {
                 ...user,
                 password: hashedPassword,
                 roles: {
-                    connect: [role]
-                }
-            }
+                    connect: [role],
+                },
+            },
         });
     }
 
     async findUser(username: string) {
         return await this.prisma.account.findUnique({
             where: {
-                username: username
+                username: username,
             },
             include: {
-                roles: true
-            }
+                roles: true,
+            },
         });
     }
 }

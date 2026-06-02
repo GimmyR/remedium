@@ -15,5 +15,5 @@ export class AccountDto {
 export interface AccountWithRoles {
     id: number;
     username: string;
-    roles: Role[]
+    roles: Role[];
 }

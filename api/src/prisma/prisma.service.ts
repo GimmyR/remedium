@@ -9,7 +9,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
 
     constructor() {
         const pool = new Pool({
-            connectionString: process.env.DATABASE_URL
+            connectionString: process.env.DATABASE_URL,
         });
 
         const adapter = new PrismaPg(pool);
@@ -20,7 +20,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     async onModuleDestroy() {
         await this.$connect();
     }
-    
+
     async onModuleInit() {
         await this.$disconnect();
     }

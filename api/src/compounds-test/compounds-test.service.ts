@@ -7,7 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class CompoundsTestService {
     constructor(
         private readonly prisma: PrismaService,
-        private readonly compoundService: CompoundService
+        private readonly compoundService: CompoundService,
     ) {}
 
     async makeTests(tests: CompoundTestDto[]) {
@@ -39,30 +39,30 @@ export class CompoundsTestService {
             data: {
                 ...newTest,
                 details: {
-                    create: tests.map(test => ({ 
-                        compoundId: test.compoundId, 
-                        amount: test.amount 
-                    }))
-                }
-            }
+                    create: tests.map((test) => ({
+                        compoundId: test.compoundId,
+                        amount: test.amount,
+                    })),
+                },
+            },
         });
     }
 
     async findAll() {
         return await this.prisma.compoundsTest.findMany({
             orderBy: {
-                testDate: "asc",
+                testDate: 'asc',
             },
             include: {
                 details: {
                     include: {
-                        compound: true
+                        compound: true,
                     },
                     orderBy: {
-                        id: "asc"
-                    }
-                }
-            }
+                        id: 'asc',
+                    },
+                },
+            },
         });
     }
 }

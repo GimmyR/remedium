@@ -3,7 +3,7 @@ import { CompoundsTestService } from './compounds-test.service';
 import { CompoundService } from 'src/compound/compound.service';
 import request from 'supertest';
 import { App } from 'supertest/types';
-import { CompoundTestDto } from './compound-test.dto';
+import { CompoundsTestWithDetails, CompoundTestDto } from './compound-test.dto';
 import { JwtService } from '@nestjs/jwt';
 import { StartedPostgreSqlContainer } from '@testcontainers/postgresql';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -44,11 +44,9 @@ describe('CompoundsTestController', () => {
     }, 30000);
 
     afterAll(async () => {
-        if(app)
-            await app.close();
+        if (app) await app.close();
 
-        if(container)
-            await container.stop();
+        if (container) await container.stop();
     });
 
     beforeEach(async () => {
@@ -81,7 +79,7 @@ describe('CompoundsTestController', () => {
             .set('Authorization', `Bearer ${mockToken}`)
             .expect(200)
             .expect((res) => {
-                const tests = res.body;
+                const tests = res.body as CompoundsTestWithDetails[];
                 expect(Array.isArray(tests)).toBe(true);
                 expect(tests.length).toBe(1);
                 expect(tests[0].details.length).toBe(1);

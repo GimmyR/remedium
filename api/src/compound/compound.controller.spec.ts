@@ -27,11 +27,9 @@ describe('CompoundController', () => {
     }, 30000);
 
     afterAll(async () => {
-        if(app)
-            await app.close();
+        if (app) await app.close();
 
-        if(container)
-            await container.stop();
+        if (container) await container.stop();
     });
 
     beforeEach(async () => {

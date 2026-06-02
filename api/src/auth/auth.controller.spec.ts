@@ -22,11 +22,9 @@ describe('AuthController', () => {
     }, 30000);
 
     afterAll(async () => {
-        if(app)
-            await app.close();
+        if (app) await app.close();
 
-        if(container)
-            await container.stop();
+        if (container) await container.stop();
     });
 
     beforeEach(async () => {
@@ -37,11 +35,11 @@ describe('AuthController', () => {
             data: [
                 { id: 1, name: 'Client' },
                 { id: 2, name: 'Admin' },
-            ]
+            ],
         });
 
-        await accountService.createAdminUser({ username: "admin", password: "pwdAdmin" });
-        await accountService.createUser({ username: "johndoe", password: "pwdJohn" });
+        await accountService.createAdminUser({ username: 'admin', password: 'pwdAdmin' });
+        await accountService.createUser({ username: 'johndoe', password: 'pwdJohn' });
     });
 
     it('should return access_token', async () => {
