@@ -1,4 +1,6 @@
 import { ValidationPipe } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { JwtModule } from "@nestjs/jwt";
 import { Test, TestingModule } from "@nestjs/testing";
 import { PostgreSqlContainer } from "@testcontainers/postgresql";
 import { execSync } from "child_process";
@@ -28,7 +30,17 @@ export async function setupTestEnvironment() {
     process.env.ADMIN_PASSWORD = 'pwdAdmin';
 
     const module: TestingModule = await Test.createTestingModule({
-        imports: [AppModule]
+        imports: [
+            AppModule,
+            JwtModule.registerAsync({
+                imports: [ConfigModule],
+                inject: [ConfigService],
+                useFactory: (configService: ConfigService) => ({
+                    global: true,
+                    secret: configService.get<string>('JWT_SECRET'),
+                }),
+            }),
+        ],
     }).compile();
 
     const app = module.createNestApplication();
