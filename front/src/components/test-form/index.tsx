@@ -14,7 +14,14 @@ export default function TestForm() {
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        const test = formData.entries().toArray().map(entry => ({ compoundId: entry[0], amount: entry[1] }));
+        const test = formData.entries().toArray().map(entry => {
+            const strId: string = entry[0];
+            const strAmount = entry[1] as string;
+            return {
+                compoundId: parseInt(strId), 
+                amount: parseFloat(strAmount)
+            };
+        });
         
         await fetch(`${API_URL}/api/compounds-tests`, {
             method: "POST",

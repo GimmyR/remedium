@@ -1,28 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { CompoundService } from 'src/compound/compound.service';
 import { CompoundTestDto } from './compound-test.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { CompoundsTest } from './compounds-test.entity';
-import { Repository } from 'typeorm';
-import { TestDetailService } from 'src/test-detail/test-detail.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class CompoundsTestService {
     constructor(
-        @InjectRepository(CompoundsTest)
-        private readonly compoundsTestRepository: Repository<CompoundsTest>,
-        private readonly compoundService: CompoundService,
-        private readonly testDetailService: TestDetailService,
+        private readonly prisma: PrismaService,
+        private readonly compoundService: CompoundService
     ) {}
 
-    async makeTests(tests: CompoundTestDto[]): Promise<CompoundTestDto[]> {
+    async makeTests(tests: CompoundTestDto[]) {
         const promises = tests.map((test) => this.makeUniqueTest(test));
         const result = await Promise.all(promises);
         await this.saveTests(result);
         return result;
     }
 
-    private async makeUniqueTest(test: CompoundTestDto): Promise<CompoundTestDto> {
+    private async makeUniqueTest(test: CompoundTestDto) {
         const compound = await this.compoundService.findOne(test.compoundId);
 
         if (
@@ -40,23 +35,34 @@ export class CompoundsTestService {
 
     private async saveTests(tests: CompoundTestDto[]) {
         const newTest = { testDate: new Date() };
-        const savedTest = await this.compoundsTestRepository.save(newTest);
-        await this.testDetailService.saveDetails(savedTest, tests);
+        return await this.prisma.compoundsTest.create({
+            data: {
+                ...newTest,
+                details: {
+                    create: tests.map(test => ({ 
+                        compoundId: test.compoundId, 
+                        amount: test.amount 
+                    }))
+                }
+            }
+        });
     }
 
-    async findAll(): Promise<CompoundsTest[]> {
-        return await this.compoundsTestRepository.find({
-            order: {
-                testDate: 'ASC',
-                details: {
-                    id: 'ASC',
-                },
+    async findAll() {
+        return await this.prisma.compoundsTest.findMany({
+            orderBy: {
+                testDate: "asc",
             },
-            relations: {
+            include: {
                 details: {
-                    compound: true,
-                },
-            },
+                    include: {
+                        compound: true
+                    },
+                    orderBy: {
+                        id: "asc"
+                    }
+                }
+            }
         });
     }
 }

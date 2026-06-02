@@ -28,7 +28,7 @@ export class SaveCompoundRequest {
 
     @IsDefined({ message: 'Active is missing' })
     @ApiProperty({ example: true })
-    active: boolean;
+    active?: boolean;
 }
 
 export class UpdateActiveRequest {
