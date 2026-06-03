@@ -4,8 +4,8 @@ import { FormEvent, useState } from "react";
 import TestInput from "./test-input";
 import { Compound } from "@/interfaces/compound";
 import AddCompoundModal from "../add-compound-modal";
-import { API_URL } from "@/lib/urls";
 import { CompoundTest } from "@/interfaces/compound-test";
+import { makeTests } from "@/actions/compounds-test";
 
 export default function TestForm() {
     const [compoundsToTest, setCompoundsToTest] = useState<Compound[]>([]);
@@ -23,15 +23,8 @@ export default function TestForm() {
             };
         });
         
-        await fetch(`${API_URL}/api/compounds-tests`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(test)
-        }).then(res => res.json())
-            .then(data => setTestedCompounds(data))
-            .catch(error => console.error(error));
+        const tstCmp = await makeTests(test);
+        setTestedCompounds(tstCmp);
     };
 
     const addCompound = (compound: Compound) => {

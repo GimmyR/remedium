@@ -1,13 +1,13 @@
 "use server";
 
 import { Compound } from "@/interfaces/compound";
-import { API_URL } from "@/lib/urls";
+import { PUBLIC_URL, PRIVATE_URL } from "@/lib/urls";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect, RedirectType } from "next/navigation";
 
 export async function fetchAllCompounds(): Promise<Compound[]> {
-    const res = await fetch(`${API_URL}/api/compounds`);
+    const res = await fetch(`${PRIVATE_URL ? PRIVATE_URL : PUBLIC_URL}/api/compounds`);
 
     if(res.ok)
         return await res.json();
@@ -18,7 +18,7 @@ export async function fetchAllCompounds(): Promise<Compound[]> {
 export async function fetchUniqueCompound(id: number): Promise<Compound> {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get("access_token");
-    const res = await fetch(`${API_URL}/api/compounds/${id}`, {
+    const res = await fetch(`${PRIVATE_URL ? PRIVATE_URL : PUBLIC_URL}/api/compounds/${id}`, {
         headers: {
             "Authorization": `Bearer ${accessToken ? accessToken.value : ''}`
         }
@@ -34,7 +34,7 @@ export async function createCompound(compound: Compound) {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get("access_token");
 
-    const res = await fetch(`${API_URL}/api/compounds/`, {
+    const res = await fetch(`${PRIVATE_URL ? PRIVATE_URL : PUBLIC_URL}/api/compounds/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export async function updateCompound(compound: Compound) {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get("access_token");
 
-    const res = await fetch(`${API_URL}/api/compounds/`, {
+    const res = await fetch(`${PRIVATE_URL ? PRIVATE_URL : PUBLIC_URL}/api/compounds/`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -76,7 +76,7 @@ export async function patchActive(id: number, active: boolean) {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get("access_token");
 
-    const res = await fetch(`${API_URL}/api/compounds/`, {
+    const res = await fetch(`${PRIVATE_URL ? PRIVATE_URL : PUBLIC_URL}/api/compounds/`, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -97,7 +97,7 @@ export async function removeCompound(id: number) {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get("access_token");
 
-    const res = await fetch(`${API_URL}/api/compounds/${id}`, {
+    const res = await fetch(`${PRIVATE_URL ? PRIVATE_URL : PUBLIC_URL}/api/compounds/${id}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",

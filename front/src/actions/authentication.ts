@@ -1,6 +1,7 @@
 "use server";
 
-import { API_URL } from "@/lib/urls";
+import { Account } from "@/interfaces/account";
+import { PUBLIC_URL, PRIVATE_URL } from "@/lib/urls";
 import { cookies } from "next/headers";
 import { redirect, RedirectType } from "next/navigation";
 
@@ -17,7 +18,7 @@ export async function verifyAdminAuth() {
     if(!accessToken)
         redirect("/", RedirectType.replace);
 
-    const res = await fetch(`${API_URL}/api/auth/is-admin`, {
+    const res = await fetch(`${PRIVATE_URL ? PRIVATE_URL : PUBLIC_URL}/api/auth/is-admin`, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${accessToken.value}`
@@ -37,7 +38,7 @@ export async function signedInAsAdmin() {
     if(!accessToken)
         return false;
 
-    const res = await fetch(`${API_URL}/api/auth/is-admin`, {
+    const res = await fetch(`${PRIVATE_URL ? PRIVATE_URL : PUBLIC_URL}/api/auth/is-admin`, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${accessToken.value}`
@@ -45,6 +46,23 @@ export async function signedInAsAdmin() {
     });
 
     return res.ok;
+}
+
+export async function signIn(credentials: Account) {
+    const res = await fetch(`${PRIVATE_URL ? PRIVATE_URL : PUBLIC_URL}/api/auth/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(credentials)
+    });
+
+    const data = await res.json();
+
+    if(res.status == 201)
+        await saveAccessToken(data.access_token);
+
+    else throw new Error(data.message);
 }
 
 export async function signOut() {
