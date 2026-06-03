@@ -1,9 +1,9 @@
 "use client";
 
 import { Compound } from "@/interfaces/compound";
-import { API_URL } from "@/lib/urls";
 import { useEffect, useState } from "react";
 import AddCompound from "./add-compound";
+import { fetchAllCompounds } from "@/actions/compound";
 
 type Props = {
     compoundsToTest: Compound[],
@@ -15,9 +15,8 @@ export default function AddCompoundModal({ compoundsToTest, addCompound } : Prop
     const [search, setSearch] = useState<string>("");
 
     const fetchCompounds = async () => {
-        await fetch(`${API_URL}/api/compounds/`)
-                .then(res => res.json())
-                .then(data => setCompounds(data))
+        await fetchAllCompounds()
+            .then(data => setCompounds(data))
                 .catch(error => console.error(error));
     };
 

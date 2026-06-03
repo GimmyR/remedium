@@ -37,7 +37,7 @@ export class CompoundController {
     @ApiResponse({ status: HttpStatus.CREATED, description: 'Posted compound is created' })
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Unknown error' })
     async create(@Body() compound: SaveCompoundRequest) {
-        return await this.compoundService.save(compound);
+        return await this.compoundService.create(compound);
     }
 
     @Put()
@@ -47,7 +47,7 @@ export class CompoundController {
     @ApiResponse({ status: HttpStatus.CREATED, description: 'Compound is updated' })
     @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Compound not found' })
     async update(@Body() compound: SaveCompoundRequest) {
-        return await this.compoundService.save(compound);
+        return await this.compoundService.update(compound);
     }
 
     @Patch()
@@ -57,7 +57,7 @@ export class CompoundController {
     @ApiResponse({ status: HttpStatus.CREATED, description: "'active' attribute has been successfully updated" })
     @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Compound not found' })
     async updateActive(@Body() compound: UpdateActiveRequest) {
-        return await this.compoundService.update(compound);
+        return await this.compoundService.partiallyUpdate(compound);
     }
 
     @Delete(':id')

@@ -2,32 +2,21 @@
 
 import { FormEvent } from "react";
 import SignInInput from "./sign-in-input";
-import { API_URL } from "@/lib/urls";
-import { saveAccessToken } from "@/actions/authentication";
+import { signIn } from "@/actions/authentication";
 
 export default function SignInForm() {
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
+        const user = formData.get("username") as string;
+        const pwd = formData.get("password") as string;
+        
         const credentials = {
-            username: formData.get("username"),
-            password: formData.get("password")
+            username: user,
+            password: pwd
         };
 
-        const res = await fetch(`${API_URL}/api/auth/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(credentials)
-        });
-
-        const data = await res.json();
-
-        if(res.status == 201)
-            await saveAccessToken(data.access_token);
-
-        else console.log(`ERROR (${res.status}) :`, data);
+        await signIn(credentials);
     };
 
     return (

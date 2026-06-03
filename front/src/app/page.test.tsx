@@ -1,25 +1,21 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import Home from "./page";
 
-global.fetch = jest.fn();
-
 const compounds = [
     { id: 1, title: "Paracetamol", unit: "mg" },
     { id: 2, title: "Ibuprofen", unit: "mg" },
     { id: 3, title: "Aspirin", unit: "mg" }
 ];
 
+jest.mock("@/actions/compounds-test", () => ({
+    makeTests: jest.fn()
+}));
+
+jest.mock("@/actions/compound", () => ({
+    fetchAllCompounds: jest.fn(() => Promise.resolve(compounds))
+}));
+
 describe("Test TestForm component", () => {
-    beforeEach(() => {
-        (global.fetch as jest.Mock).mockResolvedValueOnce({
-            json: async () => (compounds)
-        });
-    });
-
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
-
     it("should display 'Test compounds' title", async () => {
         render(<Home/>);
         await waitFor(() => {

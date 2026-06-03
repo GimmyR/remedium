@@ -1,57 +1,35 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AccountController } from './account.controller';
-import { AccountService } from './account.service';
-import { JwtService } from '@nestjs/jwt';
 import { INestApplication } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { Account } from './account.entity';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
-import { RoleService } from 'src/role/role.service';
-import { Role } from 'src/role/role.entity';
 import request from 'supertest';
 import { AccountDto } from './account.dto';
 import { App } from 'supertest/types';
+import { StartedPostgreSqlContainer } from '@testcontainers/postgresql';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { setupTestEnvironment } from '../../test/test-db.helper';
 
 describe('AccountController', () => {
     let app: INestApplication;
-    let repository: Repository<Role>;
+    let container: StartedPostgreSqlContainer;
+    let prisma: PrismaService;
 
     beforeAll(async () => {
-        process.env.JWT_SECRET = 'loremipsumdolorsitametconsecteturadipiscingelitseddoeiusmodtempx';
-        process.env.PASSWORD_STRENGTH = '12';
-        process.env.ADMIN_USERNAME = 'admin';
-        process.env.ADMIN_PASSWORD = 'pwdAdmin';
-
-        const module: TestingModule = await Test.createTestingModule({
-            imports: [
-                TypeOrmModule.forRoot({
-                    type: 'sqlite',
-                    database: ':memory:',
-                    entities: [Account, Role],
-                    synchronize: true,
-                }),
-                TypeOrmModule.forFeature([Account, Role]),
-            ],
-            controllers: [AccountController],
-            providers: [AccountService, RoleService, JwtService],
-        }).compile();
-
-        app = module.createNestApplication();
-        await app.init();
-        repository = module.get<Repository<Role>>(getRepositoryToken(Role));
-    });
+        const env = await setupTestEnvironment();
+        app = env.app;
+        container = env.container;
+        prisma = app.get<PrismaService>(PrismaService);
+    }, 30000);
 
     afterAll(async () => {
-        await app.close();
+        if (app) await app.close();
+
+        if (container) await container.stop();
     });
 
     beforeEach(async () => {
-        await repository.clear();
-        await repository.save([{ id: 1, name: 'Client' }]);
-    });
-
-    it('should be defined', () => {
-        expect(repository).toBeDefined();
+        await prisma.account.deleteMany({});
+        await prisma.role.deleteMany({});
+        await prisma.role.create({
+            data: { id: 1, name: 'Client' },
+        });
     });
 
     it('should return Account', async () => {

@@ -1,6 +1,6 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import { Account } from '@prisma/client';
 import { map, Observable } from 'rxjs';
-import { Account } from './account.entity';
 
 @Injectable()
 export class AccountInterceptor implements NestInterceptor {

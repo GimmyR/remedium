@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { Role } from '@prisma/client';
 import { compare } from 'bcrypt';
-import { AccountDto } from 'src/account/account.dto';
-import { Account } from 'src/account/account.entity';
+import { AccountDto, AccountWithRoles } from 'src/account/account.dto';
 import { AccountService } from 'src/account/account.service';
 
 @Injectable()
@@ -23,11 +23,11 @@ export class AuthService {
         return await this.generateToken(result);
     }
 
-    private async generateToken(user: Account): Promise<string> {
+    private async generateToken(user: AccountWithRoles): Promise<string> {
         return await this.jwtService.signAsync({
             sub: user.id,
             name: user.username,
-            roles: user.roles.map((role) => role.name),
+            roles: user.roles.map((role: Role) => role.name),
         });
     }
 }

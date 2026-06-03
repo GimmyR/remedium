@@ -1,98 +1,51 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from './auth.controller';
-import { AccountService } from 'src/account/account.service';
-import { AuthService } from './auth.service';
-import { JwtModule } from '@nestjs/jwt';
-import { RoleService } from 'src/role/role.service';
-import { Repository } from 'typeorm';
-import { Role } from 'src/role/role.entity';
-import { Account } from 'src/account/account.entity';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { INestApplication } from '@nestjs/common';
+import { StartedPostgreSqlContainer } from '@testcontainers/postgresql';
 import { AccountDto } from 'src/account/account.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 import request from 'supertest';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { App } from 'supertest/types';
+import { setupTestEnvironment } from '../../test/test-db.helper';
+import { AccountService } from 'src/account/account.service';
 
 describe('AuthController', () => {
     let app: INestApplication;
-    let roleRepository: Repository<Role>;
-    let accountRepository: Repository<Account>;
+    let container: StartedPostgreSqlContainer;
+    let prisma: PrismaService;
+    let accountService: AccountService;
 
     beforeAll(async () => {
-        process.env.JWT_SECRET = 'loremipsumdolorsitametconsecteturadipiscingelitseddoeiusmodtempx';
-        process.env.PASSWORD_STRENGTH = '12';
-        process.env.ADMIN_USERNAME = 'admin';
-        process.env.ADMIN_PASSWORD = 'pwdAdmin';
-
-        const module: TestingModule = await Test.createTestingModule({
-            imports: [
-                TypeOrmModule.forRoot({
-                    type: 'sqlite',
-                    database: ':memory:',
-                    entities: [Account, Role],
-                    synchronize: true,
-                }),
-                TypeOrmModule.forFeature([Account, Role]),
-                JwtModule.registerAsync({
-                    imports: [ConfigModule],
-                    inject: [ConfigService],
-                    useFactory: (configService: ConfigService) => ({
-                        global: true,
-                        secret: configService.get<string>('JWT_SECRET'),
-                    }),
-                }),
-            ],
-            controllers: [AuthController],
-            providers: [AuthService, AccountService, RoleService],
-        }).compile();
-
-        app = module.createNestApplication();
-        await app.init();
-        roleRepository = module.get<Repository<Role>>(getRepositoryToken(Role));
-        accountRepository = module.get<Repository<Account>>(getRepositoryToken(Account));
-    });
+        const env = await setupTestEnvironment();
+        app = env.app;
+        container = env.container;
+        prisma = app.get<PrismaService>(PrismaService);
+        accountService = app.get<AccountService>(AccountService);
+    }, 30000);
 
     afterAll(async () => {
-        await app.close();
+        if (app) await app.close();
+
+        if (container) await container.stop();
     });
 
     beforeEach(async () => {
-        await roleRepository.clear();
-        await roleRepository.save([
-            { id: 1, name: 'Client' },
-            { id: 2, name: 'Admin' },
-        ]);
+        await prisma.account.deleteMany({});
+        await prisma.role.deleteMany({});
 
-        await accountRepository.clear();
-        await accountRepository.save([
-            {
-                id: 1,
-                username: 'johndoe',
-                password: '$2a$12$AiWntMCIWJkMWFyD6RIa/uIrRAup40XYpobOm3EjlSd6rKlyTOrnG',
-                roles: [{ id: 1, name: 'Client' }],
-            },
-            {
-                id: 2,
-                username: 'admin',
-                password: '$2a$12$LeJsCJuB1N6EEpLlW5ybterDTnK8Smn3qviiF6K4wgvdRHgpV.jaK',
-                roles: [{ id: 2, name: 'Admin' }],
-            },
-        ]);
-    });
+        await prisma.role.createMany({
+            data: [
+                { id: 1, name: 'Client' },
+                { id: 2, name: 'Admin' },
+            ],
+        });
 
-    it('should be defined', () => {
-        expect(roleRepository).toBeDefined();
-    });
-
-    it('should be defined', () => {
-        expect(accountRepository).toBeDefined();
+        await accountService.createAdminUser({ username: 'admin', password: 'pwdAdmin' });
+        await accountService.createUser({ username: 'johndoe', password: 'pwdJohn' });
     });
 
     it('should return access_token', async () => {
         const credentials: AccountDto = {
             username: 'johndoe',
-            password: 'pwd123',
+            password: 'pwdJohn',
         };
 
         const res = await request(app.getHttpServer() as App)

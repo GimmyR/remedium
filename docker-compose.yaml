@@ -30,14 +30,8 @@ services:
         condition: service_healthy
     ports:
       - "8000:8000"
-    environment:
-      DB_HOST: db
-      DB_PORT: ${DB_PORT}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: ${DB_NAME}
-      PASSWORD_STRENGTH: ${PASSWORD_STRENGTH}
-      JWT_SECRET: ${JWT_SECRET}
+    env_file:
+      - ./api/.env
     profiles:
       - prod
 
@@ -47,14 +41,16 @@ services:
       dockerfile: Dockerfile.ci
     profiles:
       - ci
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
   front:
     build:
       context: ./front
       dockerfile: Dockerfile
-      args:
-        - NEXT_PUBLIC_CLIENT_SIDE_TO_API=${NEXT_PUBLIC_CLIENT_SIDE_TO_API}
     container_name: next-remedium
+    environment:
+      SERVER_SIDE_TO_API: http://api:8000
     ports:
       - "3000:3000"
     profiles:
