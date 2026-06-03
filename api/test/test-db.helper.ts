@@ -8,7 +8,7 @@ import path from 'path';
 import { AppModule } from 'src/app.module';
 
 export async function setupTestEnvironment() {
-    const container = await new PostgreSqlContainer('postgres:15-alpine').start();
+    const container = await new PostgreSqlContainer('postgres:trixie').start();
     const databaseUrl = container.getConnectionUri();
     const schemaPath = path.resolve(__dirname, '../prisma/schema.prisma');
     execSync(`npx prisma db push --schema=${schemaPath} --accept-data-loss --url="${databaseUrl}"`, {
