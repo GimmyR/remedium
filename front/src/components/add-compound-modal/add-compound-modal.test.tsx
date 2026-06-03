@@ -2,8 +2,6 @@ import { render, screen, waitFor } from "@testing-library/react";
 import AddCompoundModal from ".";
 import { Compound } from "@/interfaces/compound";
 
-global.fetch = jest.fn();
-
 const props = {
     compoundsToTest: [
         { id: 2, title: "Ibuprofen", unit: "mg", active: true }
@@ -17,17 +15,11 @@ const compounds = [
     { id: 3, title: "Aspirin", unit: "mg", active: true }
 ];
 
+jest.mock("@/actions/compound", () => ({
+    fetchAllCompounds: jest.fn(() => Promise.resolve(compounds))
+}));
+
 describe("Test AddCompoundModal component", () => {
-    beforeEach(() => {
-        (global.fetch as jest.Mock).mockResolvedValueOnce({
-            json: async () => (compounds)
-        });
-    });
-
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
-
     it("should display 'Add compound' title", async () => {
         render(<AddCompoundModal {...props}/>);
         await waitFor(() => {
