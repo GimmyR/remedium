@@ -42,9 +42,6 @@ PASSWORD_STRENGTH=12
 
 # JWT (HS512 requires at least 64 bytes)
 JWT_SECRET=your_very_long_random_secret_key_here_at_least_64_bytes
-
-# API URL
-NEXT_PUBLIC_CLIENT_SIDE_TO_API=http://localhost:8000
 ```
 
 If you want to use a `.env` file, place it in the project's root directory.
