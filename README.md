@@ -11,6 +11,12 @@ It is built with:
 - **PostgreSQL** for data persistence  
 - **Docker** for containerized deployment
 
+## Live Demo
+- Frontend: https://remedium-front.vercel.app/
+- API Documentation: https://remedium-fmlc.onrender.com/api
+
+> ℹ️ The backend is hosted on Render (free tier) and may experience a cold start.
+
 ![Front-Office](./screenshots/front-office.png)
 
 ![Back-Office](./screenshots/back-office.png)
