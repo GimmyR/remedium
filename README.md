@@ -27,24 +27,22 @@ Before building or running the application, make sure you have the following ins
 ## Environment variables
 
 ```bash
-# Database (PostgreSQL)
-DB_PORT=your_db_port
+# For Database
+
 DB_USERNAME=your_db_username
 DB_PASSWORD=your_db_password
 DB_name=your_database_name
 
-# Admin
+# For NestJS
+
+DATABASE_URL=postgres://your_db_username:your_db_password@db:5432/your_database_name
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=your_admin_password
-
-# Password hashing strength (bcrypt cost)
 PASSWORD_STRENGTH=12
-
-# JWT (HS512 requires at least 64 bytes)
 JWT_SECRET=your_very_long_random_secret_key_here_at_least_64_bytes
 ```
 
-If you want to use a `.env` file, place it in the project's root directory.
+If you want to use a `.env` file, place one in the project's root directory with "For Database" variables and one in *api/* folder with "For NestJS" variables.
 
 ## Launch the application
 
