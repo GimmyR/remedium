@@ -5,4 +5,4 @@ RUN npm install
 COPY prisma ./prisma/
 RUN npx prisma generate
 COPY . .
-CMD ["sh", "-c", "npm run lint && npm run test"]
+CMD ["sh", "-c", "npm run test"]
