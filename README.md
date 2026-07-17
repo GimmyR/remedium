@@ -11,9 +11,9 @@ It is built with:
 - **PostgreSQL** for data persistence  
 - **Docker** for containerized deployment
 
-<video src"https://github.com/user-attachments/assets/92060f0f-a6d7-4bd7-9821-0b6fc18bdaa5" width="1280" controls autoplay loop muted></video>
+<video src="https://github.com/user-attachments/assets/b59b2f0b-bdd3-4035-9f61-8245de128b9c" width="1280" controls autoplay loop muted></video>
 
-<video src"https://github.com/user-attachments/assets/55b7eb10-f2b7-42e3-800e-97deec0e5b2c" width="1280" controls autoplay loop muted></video>
+<video src="https://github.com/user-attachments/assets/7463bc47-c3ce-4243-b312-a3193cbb69bf" width="1280" controls autoplay loop muted></video>
 
 ## Live Demo
 
