@@ -11,17 +11,16 @@ It is built with:
 - **PostgreSQL** for data persistence  
 - **Docker** for containerized deployment
 
+<video src"https://github.com/user-attachments/assets/92060f0f-a6d7-4bd7-9821-0b6fc18bdaa5" width="1280" controls autoplay loop muted></video>
+
+<video src"https://github.com/user-attachments/assets/55b7eb10-f2b7-42e3-800e-97deec0e5b2c" width="1280" controls autoplay loop muted></video>
+
 ## Live Demo
+
 - Frontend: https://remedium-front.vercel.app/
 - API Documentation: https://remedium-fmlc.onrender.com/api
 
 > ℹ️ The backend is hosted on Render (free tier) and may experience a cold start.
-
-![Front-Office](./screenshots/front-office.png)
-
-![Back-Office](./screenshots/back-office.png)
-
-![API](./screenshots/api.png)
 
 ## Prerequisites
 
