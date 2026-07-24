@@ -9,7 +9,7 @@ export class SaveCompoundRequest {
 
     @IsNotEmpty({ message: 'Title is missing' })
     @ApiProperty({ example: 'Paracetamol' })
-    title: string;
+    title!: string;
 
     @IsOptional()
     @IsNotEmpty({ message: 'Unit is missing' })
@@ -35,9 +35,9 @@ export class UpdateActiveRequest {
     @IsDefined({ message: 'ID is missing' })
     @IsPositive({ message: 'ID should be a positive number' })
     @ApiProperty({ example: 1 })
-    id: number;
+    id!: number;
 
     @IsDefined({ message: 'Active is missing' })
     @ApiProperty({ example: false })
-    active: boolean;
+    active!: boolean;
 }
