@@ -36,6 +36,8 @@ model Compound {
 model CompoundsTest {
   id          Int           @id @default(autoincrement())
   testDate    DateTime      @db.Timestamptz(6)
+  applicant   String        @db.VarChar(100)
+  reason      String
   details     TestDetail[]
   @@map("compounds_test")
 }
