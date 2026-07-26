@@ -7,8 +7,16 @@ export interface CompoundTest {
     message?: string;
 }
 
+export interface CreateTest {
+    applicant: string;
+    reason: string;
+    compounds: CompoundTest[];
+}
+
 export interface CompoundsTest {
     id: number;
     testDate: Date;
+    applicant: string;
+    reason: string;
     details: TestDetail[]
 }

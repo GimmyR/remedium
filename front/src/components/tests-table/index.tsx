@@ -1,66 +1,90 @@
+"use client";
+
+import TestDetailsModal from "@/components/tests-table/test-details-modal";
+import TestResult from "@/components/tests-table/test-result";
 import { CompoundsTest } from "@/interfaces/compound-test";
 import { format } from "date-fns";
+import Link from "next/link";
+import { useState } from "react";
 
 type Props = {
     tests: CompoundsTest[]
 };
 
+const defaultTest: CompoundsTest = {
+    id: 0,
+    testDate: new Date(),
+    applicant: "Unknown",
+    reason: "Unknown",
+    details: []
+};
+
 export default function TestsTable({ tests } : Props) {
-    const formatTests = () => {
-        const results: any[] = tests.reduce((acc: any[], test: CompoundsTest) => {
-            for(const detail of test.details)
-                acc.push({
-                    id: test.id,
-                    detailId: detail.id,
-                    date: format(test.testDate, "dd/MM/yyyy HH:mm"),
-                    title: detail.compound.title,
-                    unit: detail.compound.unit,
-                    min: detail.compound.min,
-                    max: detail.compound.max,
-                    amount: detail.amount,
-                    status: isGood(detail)
-                });
+    const [selectedTest, setSelectedTest] = useState<CompoundsTest>(defaultTest);
 
-            return acc;
-        }, []);
-
-        return results.sort((a, b) => a.id - b.id);
+    const sortTests = () => {
+        return tests.sort((a, b) => {
+            const date1 = new Date(a.testDate);
+            const date2 = new Date(b.testDate);
+            return date2.getTime() - date1.getTime();
+        });
     };
 
-    const isGood = (test: any) => (test.min && test.min <= test.amount) && (test.max && test.max >= test.amount);
+    const isGood = (test: CompoundsTest) => {
+        for(const detail of test.details) {
+            if((detail.compound.min && detail.amount < detail.compound.min) || (detail.compound.max && detail.amount > detail.compound.max))
+                return false;
+        } return true;
+    };
+
+    const showTestDetailsModal = (test: CompoundsTest) => {
+        setSelectedTest(test);
+        const element = document.querySelector("#test-details-modal");
+
+        if(element) {
+            const bootstrap = require("bootstrap");
+            const modal = new bootstrap.Modal(element);
+
+            if(modal) {
+                modal.show();
+                element.addEventListener("hide.bs.modal", () => {
+                    setSelectedTest(defaultTest);
+                });
+            }
+        }
+    };
 
     return (
-        <table className="table table-hover text-center">
-            <thead>
-                <tr>
-                    <th>Test ID</th>
-                    <th>Detail ID</th>
-                    <th>Date & Time</th>
-                    <th>Title</th>
-                    <th>Unit</th>
-                    <th>Min</th>
-                    <th>Max</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {formatTests().map(test => <tr key={`${test.id}-${test.detailId}`} className="align-middle">
-                    <td>{test.id}</td>
-                    <td>{test.detailId}</td>
-                    <td className="text-nowrap">{test.date}</td>
-                    <td>{test.title}</td>
-                    <td>{test.unit}</td>
-                    <td>{test.min}</td>
-                    <td>{test.max}</td>
-                    <td>{test.amount}</td>
-                    <td>
-                        <span className={`text-nowrap text-bg-${isGood(test) ? "success" : "danger"} ps-2 pe-3 py-1 rounded-4`}>
-                            <i className={`bi bi-${isGood(test) ? "check-circle-fill" : "x-circle-fill"} me-2`}></i>{isGood(test) ? "Good" : "Bad"}
-                        </span>
-                    </td>
-                </tr>)}
-            </tbody>
-        </table>
+        <>
+            <table className="table table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date & Time</th>
+                        <th>Applicant</th>
+                        <th>Reason</th>
+                        <th>Result</th>
+                        <th>See details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {sortTests().map(test => <tr key={test.id} className="align-middle">
+                        <td>{test.id}</td>
+                        <td className="text-nowrap">{format(test.testDate, "dd/MM/yyyy HH:mm")}</td>
+                        <td>{test.applicant}</td>
+                        <td>{test.reason}</td>
+                        <td>
+                            <TestResult result={isGood(test)}/>
+                        </td>
+                        <td>
+                            <Link href="#" onClick={() => showTestDetailsModal(test)}>
+                                <i className="bi bi-eye-fill"></i>
+                            </Link>
+                        </td>
+                    </tr>)}
+                </tbody>
+            </table>
+            <TestDetailsModal test={selectedTest}/>
+        </>
     );
 }

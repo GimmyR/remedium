@@ -1,5 +1,5 @@
+import HomePage from "@/app/page";
 import { render, screen, waitFor } from "@testing-library/react";
-import Home from "./page";
 
 const compounds = [
     { id: 1, title: "Paracetamol", unit: "mg" },
@@ -7,44 +7,26 @@ const compounds = [
     { id: 3, title: "Aspirin", unit: "mg" }
 ];
 
-jest.mock("@/actions/compounds-test", () => ({
-    makeTests: jest.fn()
-}));
-
 jest.mock("@/actions/compound", () => ({
     fetchAllCompounds: jest.fn(() => Promise.resolve(compounds))
 }));
 
 describe("Test TestForm component", () => {
-    it("should display 'Test compounds' title", async () => {
-        render(<Home/>);
-        await waitFor(() => {
-            const title = screen.getByText("Test compounds");
-            expect(title).toBeInTheDocument();
-        });
+    it("should display 'Test medication' title", async () => {
+        const Home = await (HomePage() as any);
+        render(Home);
+        const title = screen.getByText("Test medication");
+        expect(title).toBeInTheDocument();
     });
 
-    it("should display add compound button and submit button", async () => {
-        render(<Home/>);
-        await waitFor(() => {
-            const addCompound = screen.getByRole("button", { name: /add compound/i });
-            expect(addCompound).toBeInTheDocument();
-            const submit = screen.getByRole("button", { name: /submit/i });
-            expect(submit).toBeInTheDocument();
-        });
-    });
-
-    it("AddCompoundModal should display compounds", async () => {
-        render(<Home/>);
-        await waitFor(() => {
-            compounds.forEach(async compound => {
-                const title = await screen.findByText(compound.title);
-                expect(title).toBeInTheDocument();
-                const unit = await screen.findByText(`(${compound.unit})`);
-                expect(unit).toBeInTheDocument();
-                const button = screen.getByRole("button", { name: /add/i });
-                expect(button).toHaveTextContent("Add");
-            });
-        });
+    it("Should display input for applicant and reason", async () => {
+        const Home = await (HomePage() as any);
+        render(Home);
+        const inputApplicant = screen.getByLabelText("Applicant");
+        expect(inputApplicant).toBeInTheDocument();
+        const inputReason = screen.getByLabelText("Reason");
+        expect(inputReason).toBeInTheDocument();
+        const startTestBtn = screen.getByRole("button", { name: "Start test" });
+        expect(startTestBtn).toBeInTheDocument();
     });
 });

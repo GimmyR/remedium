@@ -3,7 +3,7 @@ import { CompoundsTestService } from './compounds-test.service';
 import { CompoundService } from 'src/compound/compound.service';
 import request from 'supertest';
 import { App } from 'supertest/types';
-import { CompoundsTestWithDetails, CompoundTestDto } from './compound-test.dto';
+import { CompoundsTestWithDetails, CompoundTestDto, CreateTest } from './compound-test.dto';
 import { JwtService } from '@nestjs/jwt';
 import { StartedPostgreSqlContainer } from '@testcontainers/postgresql';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -18,9 +18,15 @@ const compound = {
     active: true,
 };
 
-const testDetail = {
-    compoundId: compound.id,
-    amount: 200,
+const test: CreateTest = {
+    applicant: "Dr. John Doe",
+    reason: "Treating diabetes",
+    compounds: [
+        {
+            compoundId: compound.id,
+            amount: 400
+        }
+    ]
 };
 
 describe('CompoundsTestController', () => {
@@ -55,22 +61,28 @@ describe('CompoundsTestController', () => {
         await prisma.compound.deleteMany({});
 
         await compoundService.create(compound);
-        await compoundsTestService.makeTests([testDetail]);
+        await compoundsTestService.create(test);
     });
 
     it('should return error', async () => {
-        const newTest = [{ compoundId: 1, amount: 200 }];
+        const newTest: Partial<CreateTest> = {
+            applicant: "Dr. Muriel",
+            reason: "Treating flu",
+            compounds: [{ compoundId: 1, amount: 200 }]
+        };
 
         const res = await request(app.getHttpServer() as App)
             .post('/api/compounds-tests')
             .send(newTest);
 
         expect(res.status).toBe(201);
-        const tests = res.body as CompoundTestDto[];
-        expect(Array.isArray(tests)).toBe(true);
-        expect(tests.length).toBe(1);
-        expect(tests[0].error).toBe(true);
-        expect(tests[0].message).not.toBe(undefined);
+        const result = res.body as CreateTest;
+        expect(result.applicant).toBe(newTest.applicant);
+        expect(result.reason).toBe(newTest.reason);
+        expect(Array.isArray(result.compounds)).toBe(true);
+        expect(result.compounds.length).toBe(1);
+        expect(result.compounds[0].error).toBe(true);
+        expect(result.compounds[0].message).not.toBe(undefined);
     });
 
     it('Should return compounds tests with details', async () => {
@@ -82,9 +94,11 @@ describe('CompoundsTestController', () => {
                 const tests = res.body as CompoundsTestWithDetails[];
                 expect(Array.isArray(tests)).toBe(true);
                 expect(tests.length).toBe(1);
+                expect(tests[0].applicant).toBe(test.applicant);
+                expect(tests[0].reason).toBe(test.reason);
                 expect(tests[0].details.length).toBe(1);
                 expect(tests[0].details[0].compound.id).toBe(compound.id);
-                expect(tests[0].details[0].amount).toBe(testDetail.amount);
+                expect(tests[0].details[0].amount).toBe(test.compounds[0].amount);
             });
     });
 });

@@ -7,5 +7,5 @@ export class RoleDto {
 
     @ApiProperty({ example: 'Client', description: 'Name of the role' })
     @IsNotEmpty()
-    name: string;
+    name!: string;
 }

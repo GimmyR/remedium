@@ -5,21 +5,10 @@ import TestsListPage from "./page";
 const tests = [
     {
         "id": 1,
-        "testDate": new Date(),
-        "details": [
-            {
-                "id": 2,
-                "compound": {
-                    "id": 1,
-                    "title": "Paracetamol",
-                    "unit": "mg",
-                    "min": 500,
-                    "max": 1000,
-                    "active": true
-                },
-                "amount": 300
-            }
-        ]
+        "testDate": new Date(2026, 6, 26, 9, 30),
+        "applicant": "Dr. Vance",
+        "reason": "To alleviate chronic neuropathic pain in diabetic patients.",
+        "details": []
     }
 ];
 
@@ -39,7 +28,9 @@ describe("Test TestsTable component", () => {
         expect(title).toBeInTheDocument();
         const date = screen.getByText(format(tests[0].testDate, "dd/MM/yyyy HH:mm"));
         expect(date).toBeInTheDocument();
-        const compoundTitle = screen.getByText(tests[0].details[0].compound.title);
-        expect(compoundTitle).toBeInTheDocument();
+        const applicant = screen.getByText(tests[0].applicant);
+        expect(applicant).toBeInTheDocument();
+        const reason = screen.getByText(tests[0].reason);
+        expect(reason).toBeInTheDocument();
     });
 });

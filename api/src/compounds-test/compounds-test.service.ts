@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CompoundService } from 'src/compound/compound.service';
-import { CompoundTestDto } from './compound-test.dto';
+import { CompoundTestDto, CreateTest } from './compound-test.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -10,11 +10,15 @@ export class CompoundsTestService {
         private readonly compoundService: CompoundService,
     ) {}
 
-    async makeTests(tests: CompoundTestDto[]) {
-        const promises = tests.map((test) => this.makeUniqueTest(test));
-        const result = await Promise.all(promises);
-        await this.saveTests(result);
-        return result;
+    async create(test: CreateTest) {
+        test.compounds = await Promise.all(
+            test.compounds.map(
+                async (compoundTest) => await this.makeUniqueTest(compoundTest)
+            )
+        );
+
+        await this.save(test);
+        return test;
     }
 
     private async makeUniqueTest(test: CompoundTestDto) {
@@ -33,13 +37,15 @@ export class CompoundsTestService {
         }
     }
 
-    private async saveTests(tests: CompoundTestDto[]) {
-        const newTest = { testDate: new Date() };
+    private async save(test: CreateTest) {
+        const { compounds, ...testWithoutCompounds } = test;
+
         return await this.prisma.compoundsTest.create({
             data: {
-                ...newTest,
+                ...testWithoutCompounds,
+                testDate: new Date(),
                 details: {
-                    create: tests.map((test) => ({
+                    create: compounds.map((test) => ({
                         compoundId: test.compoundId,
                         amount: test.amount,
                     })),

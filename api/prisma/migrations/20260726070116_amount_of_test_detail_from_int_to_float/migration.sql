@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "test_detail" ALTER COLUMN "amount" SET DATA TYPE DOUBLE PRECISION;
