@@ -18,7 +18,7 @@ export default function TestInput({ compound, amount, error } : Props) {
                     {compound.title} <span className="fw-normal">({compound.unit})</span>
                 </span>
             </div>
-            <input type="number" value={amount} className="form-control rounded-0" step="any" alt={`compound-${compound.id}`} disabled/>
+            <input type="number" value={amount.toFixed(2)} className="form-control rounded-0" step="any" alt={`compound-${compound.id}`} disabled/>
             {error && error.status && <div className="form-text text-danger ps-3">{error.message}</div>}
         </div>
     );
