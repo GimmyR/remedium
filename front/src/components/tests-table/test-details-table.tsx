@@ -1,3 +1,4 @@
+import TestResult from "@/components/tests-table/test-result";
 import { TestDetail } from "@/interfaces/test-detail";
 
 type Props = {
@@ -27,9 +28,7 @@ export default function TestDetailsTable({ details } : Props) {
                     <td>{detail.compound.max}</td>
                     <td>{detail.amount.toFixed(2)}</td>
                     <td>
-                        <span className={`text-nowrap text-bg-${isGood(detail) ? "success" : "danger"} ps-2 pe-3 py-1 rounded-4`}>
-                            <i className={`bi bi-${isGood(detail) ? "check-circle-fill" : "x-circle-fill"} me-2`}></i>{isGood(detail) ? "Good" : "Bad"}
-                        </span>
+                        <TestResult result={isGood(detail)}/>
                     </td>
                 </tr>)}
             </tbody>

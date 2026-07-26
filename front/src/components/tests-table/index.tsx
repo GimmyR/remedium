@@ -1,6 +1,7 @@
 "use client";
 
 import TestDetailsModal from "@/components/tests-table/test-details-modal";
+import TestResult from "@/components/tests-table/test-result";
 import { CompoundsTest } from "@/interfaces/compound-test";
 import { format } from "date-fns";
 import Link from "next/link";
@@ -73,9 +74,7 @@ export default function TestsTable({ tests } : Props) {
                         <td>{test.applicant}</td>
                         <td>{test.reason}</td>
                         <td>
-                            <span className={`text-nowrap text-bg-${isGood(test) ? "success" : "danger"} ps-2 pe-3 py-1 rounded-4`}>
-                                <i className={`bi bi-${isGood(test) ? "check-circle-fill" : "x-circle-fill"} me-2`}></i>{isGood(test) ? "Good" : "Bad"}
-                            </span>
+                            <TestResult result={isGood(test)}/>
                         </td>
                         <td>
                             <Link href="#" onClick={() => showTestDetailsModal(test)}>

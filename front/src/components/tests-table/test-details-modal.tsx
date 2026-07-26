@@ -1,4 +1,5 @@
 import TestDetailsTable from "@/components/tests-table/test-details-table";
+import TestInfo from "@/components/tests-table/test-info";
 import { CompoundsTest } from "@/interfaces/compound-test";
 import { format } from "date-fns";
 
@@ -18,26 +19,7 @@ export default function TestDetailsModal({ test } : Props) {
                     <div className="modal-body">
                         <div className="d-flex flex-column">
                             <div>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td className="pe-2">
-                                                <strong>
-                                                    <span className="text-decoration-underline me-1">Test date</span>:
-                                                </strong>
-                                            </td>
-                                            <td>{format(test.testDate, "dd/MM/yyyy HH:mm")}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <strong>
-                                                    <span className="text-decoration-underline me-1">Reason</span>:
-                                                </strong>
-                                            </td>
-                                            <td>{test.reason}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <TestInfo test={test}/>
                             </div>
                             <div className="mt-3">
                                 <TestDetailsTable details={test.details}/>
