@@ -26,6 +26,7 @@ export class CreateTest {
 
     @IsArray({ message: "Compounds should be an array" })
     @ArrayNotEmpty({ message: "Compounds should not be an empty array" })
+    @ApiProperty({ description: "List of compounds to test", type: [CompoundTestDto] })
     compounds!: CompoundTestDto[];
 }
 

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpStatus, Post, UseGuards } from '@nestjs/common';
-import { CompoundTestDto, CreateTest } from './compound-test.dto';
+import { CreateTest } from './compound-test.dto';
 import { CompoundsTestService } from './compounds-test.service';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
@@ -14,7 +14,6 @@ export class CompoundsTestController {
 
     @Post()
     @ApiOperation({ summary: 'Make test for given compounds' })
-    @ApiBody({ type: [CompoundTestDto] })
     @ApiResponse({ status: HttpStatus.CREATED, description: 'Tests done' })
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Unknown error' })
     async testCompounds(@Body() test: CreateTest) {
