@@ -16,5 +16,7 @@ export interface CreateTest {
 export interface CompoundsTest {
     id: number;
     testDate: Date;
+    applicant: string;
+    reason: string;
     details: TestDetail[]
 }
