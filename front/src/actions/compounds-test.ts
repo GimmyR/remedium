@@ -40,9 +40,12 @@ export async function createTest(test: CreateTest) {
     const data = await res.json();
 
     if(res.ok)
-        return data;
+        return { success: true, data };
 
-    else throw new Error(data.message[0]);
+    else if(data.message)
+        return { success: false, data: data.message };
+
+    else return { success: false, data: "Unknown error (please contact admin) !" };
 }
 
 export async function generateCompounds(compounds: Compound[]) {

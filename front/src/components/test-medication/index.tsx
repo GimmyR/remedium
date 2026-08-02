@@ -33,13 +33,16 @@ export default function TestMedication({ compounds } : Props) {
             setStatus(2);
             try {
 
-                const data = await createTest({
+                const result = await createTest({
                     applicant: form.get("applicant") as string,
                     reason: form.get("reason") as string,
                     compounds: compoundTests
                 });
 
-                setResult(data);
+                if(result.success)
+                    setResult(result.data);
+
+                else setError(Array.isArray(result.data) ? result.data[0] : result.data);
             
             } catch(error: any) {
 
