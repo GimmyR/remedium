@@ -25,6 +25,7 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile
+    command: sh -c "npx prisma migrate deploy && node dist/src/main"
     depends_on:
       db:
         condition: service_healthy
